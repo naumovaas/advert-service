@@ -28,7 +28,8 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Просмотр профиля пользователя")
-    public void showUserDetails(@PathVariable String id){
+    public User showUserDetails(@PathVariable Long id) throws Exception {
+        return userService.findById(id).orElseThrow(() -> new Exception("Ошибка. Не найден пользователь с ID - " + id));
 
     }
 
