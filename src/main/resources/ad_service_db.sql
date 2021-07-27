@@ -56,16 +56,25 @@ CREATE TABLE COMMENT (
       REFERENCES USERS(id)
 );
 
-CREATE TABLE PRIVATE_MESSAGE (
+CREATE TABLE DIALOG (
+  id SERIAL PRIMARY KEY,
   buyer_user_id int NOT NULL,
   seller_user_id int NOT NULL,
-  text varchar(500),
-  date timestamptz,
-  
-  CONSTRAINT FK_PRIVATE_MESSAGE_BUYER_ID
+
+  CONSTRAINT FK_DIALOG_BUYER_ID
     FOREIGN KEY (buyer_user_id)
       REFERENCES USERS(id),
-  CONSTRAINT FK_PRIVATE_MESSAGE_SELLER_ID
+  CONSTRAINT FK_DIALOG_SELLER_ID
     FOREIGN KEY (seller_user_id)
       REFERENCES USERS(id)
+);
+
+CREATE TABLE MESSAGE (
+  dialog_id int NOT NULL,
+  text varchar(500),
+  date timestamptz,
+
+  CONSTRAINT FK_MESSAGE_DIALOG_ID
+    FOREIGN KEY (dialog_id)
+      REFERENCES DIALOG(id)
 );

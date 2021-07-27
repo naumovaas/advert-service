@@ -14,12 +14,8 @@ public class Message {
     private Timestamp date;
 
     @ManyToOne
-    @JoinColumn(name = "buyer_user_id")
-    private User buyer;
-
-    @ManyToOne
-    @JoinColumn(name = "seller_user_id")
-    private User seller;
+    @JoinColumn(name = "dialog_id")
+    private Dialog dialog;
 
     public String getText() {
         return text;
@@ -37,20 +33,12 @@ public class Message {
         this.date = date;
     }
 
-    public User getBuyer() {
-        return buyer;
+    public Dialog getDialog() {
+        return dialog;
     }
 
-    public void setBuyer(User buyer) {
-        this.buyer = buyer;
-    }
-
-    public User getSeller() {
-        return seller;
-    }
-
-    public void setSeller(User seller) {
-        this.seller = seller;
+    public void setDialog(Dialog dialog) {
+        this.dialog = dialog;
     }
 
 }

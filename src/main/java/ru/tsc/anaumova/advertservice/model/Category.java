@@ -9,6 +9,9 @@ public class Category {
     @Column(name = "id")
     private Long categoryId;
 
+    @Column(name = "title")
+    private String title;
+
     @ManyToOne
     @JoinColumn(name = "parent_category_id")
     private Category parentCategory;

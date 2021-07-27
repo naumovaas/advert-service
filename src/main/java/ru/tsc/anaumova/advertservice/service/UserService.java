@@ -2,6 +2,7 @@ package ru.tsc.anaumova.advertservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.tsc.anaumova.advertservice.exception.UserNotFoundException;
 import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.repository.UserRepository;
 
@@ -21,8 +22,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(final long id){
-        return userRepository.findById(id);
+    public User findById(final long id) throws UserNotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Ошибка. Не найден пользователь с ID - " + id));
     }
 
 }

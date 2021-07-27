@@ -3,6 +3,7 @@ package ru.tsc.anaumova.advertservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.tsc.anaumova.advertservice.exception.UserNotFoundException;
 import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.repository.UserRepository;
 import ru.tsc.anaumova.advertservice.service.UserService;
@@ -10,7 +11,7 @@ import ru.tsc.anaumova.advertservice.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     final UserService userService;
@@ -20,40 +21,39 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     @Operation(summary = "Просмотр списка пользователей")
     public Iterable<User> showUsers(){
         return userService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}")
     @Operation(summary = "Просмотр профиля пользователя")
-    public User showUserDetails(@PathVariable Long id) throws Exception {
-        return userService.findById(id).orElseThrow(() -> new Exception("Ошибка. Не найден пользователь с ID - " + id));
-
+    public User showUserDetails(@PathVariable Long userId) throws UserNotFoundException {
+        return userService.findById(userId);
     }
 
-    @GetMapping("/{id}/sales-history")
+    @GetMapping("/{userId}/sales-history")
     @Operation(summary = "Просмотр истории объявлений пользователя")
-    public void showUserSalesHistory(@PathVariable String id){
+    public void showUserSalesHistory(@PathVariable String userId){
 
     }
 
-    @PostMapping("/add")
+    @PostMapping
     @Operation(summary = "Добавить пользователя")
     public void addUser(@RequestBody User user){
         //return redirect /{id}
     }
 
-    @PostMapping("/update")
+    @PutMapping
     @Operation(summary = "Редактировать профиль пользователя")
     public void updateUser(@RequestBody User user){
         //return redirect /{id}
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
-    public void deleteUser(@PathVariable String id){
+    public void deleteUser(@PathVariable String userId){
         //return redirect /
     }
 
