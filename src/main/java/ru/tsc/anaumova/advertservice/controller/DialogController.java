@@ -14,9 +14,9 @@ public class DialogController {
         //return list
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{dialogId}")
     @Operation(summary = "Просмотр диалога")
-    public void showMessages(@PathVariable String id){
+    public void showMessages(@PathVariable String dialogId){
         //return list
     }
 
