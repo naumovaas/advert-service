@@ -1,6 +1,6 @@
 CREATE TABLE USERS (
   id SERIAL PRIMARY KEY,
-  username varchar(30) NOT NULL UNIQUE,
+  username varchar(30) NOT NULL,
   first_name varchar(30),
   last_name varchar(30),
   rating real
@@ -17,7 +17,7 @@ CREATE TABLE USERS_ROLE (
 
 CREATE TABLE CATEGORY (
   id SERIAL PRIMARY KEY,
-  parent_category_id int NOT NULL,
+  parent_category_id int,
   title varchar(50),
   
   CONSTRAINT FK_CATEGORY_PARENT_CATEGORY_ID
@@ -43,6 +43,7 @@ CREATE TABLE ADVERT (
 );
 
 CREATE TABLE COMMENT (
+  id SERIAL PRIMARY KEY,
   user_id int NOT NULL,
   advert_id int NOT NULL,
   text varchar(500),
@@ -70,6 +71,7 @@ CREATE TABLE DIALOG (
 );
 
 CREATE TABLE MESSAGE (
+  id SERIAL PRIMARY KEY,
   dialog_id int NOT NULL,
   text varchar(500),
   date timestamptz,

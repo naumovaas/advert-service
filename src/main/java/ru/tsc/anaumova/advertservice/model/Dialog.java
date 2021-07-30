@@ -1,7 +1,14 @@
 package ru.tsc.anaumova.advertservice.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
+@Entity
+@Table(name = "dialog")
 public class Dialog {
 
     @Id
@@ -16,29 +23,5 @@ public class Dialog {
     @ManyToOne
     @JoinColumn(name = "seller_user_id")
     private User seller;
-
-    public Long getDialogId() {
-        return dialogId;
-    }
-
-    public void setDialogId(Long dialogId) {
-        this.dialogId = dialogId;
-    }
-
-    public User getBuyer() {
-        return buyer;
-    }
-
-    public void setBuyer(User buyer) {
-        this.buyer = buyer;
-    }
-
-    public User getSeller() {
-        return seller;
-    }
-
-    public void setSeller(User seller) {
-        this.seller = seller;
-    }
 
 }

@@ -2,11 +2,12 @@ package ru.tsc.anaumova.advertservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.tsc.anaumova.advertservice.exception.UserNotFoundException;
+import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
+import ru.tsc.anaumova.advertservice.model.Advert;
 import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.repository.UserRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -22,8 +23,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findById(final long id) throws UserNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Ошибка. Не найден пользователь с ID - " + id));
+    public User findById(final long id) throws EntityNotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ошибка. Не найден пользователь с ID - " + id));
     }
+
+//    public List<Advert> findUserAdverts(final Long userId) throws EntityNotFoundException {
+//        return findById(userId).getAdverts();
+//    }
 
 }
