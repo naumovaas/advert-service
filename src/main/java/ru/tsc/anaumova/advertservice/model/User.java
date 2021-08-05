@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -28,8 +27,5 @@ public class User {
 
     @Column(name = "rating")
     private int rating;
-
-//    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Advert> adverts;
 
 }

@@ -30,11 +30,11 @@ public class Advert {
     private boolean priorityFlag;
 
     @Column(name = "user_id")
-    private boolean userId;
+    private int userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User author;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+//    private User author;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

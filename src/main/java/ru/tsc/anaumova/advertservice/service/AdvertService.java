@@ -1,9 +1,10 @@
 package ru.tsc.anaumova.advertservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.model.Advert;
-import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.repository.AdvertRepository;
 
 @Service
@@ -16,8 +17,8 @@ public class AdvertService {
         this.advertRepository = advertRepository;
     }
 
-    public Iterable<Advert> findByUserId(final Integer userId) {
-        return advertRepository.findByUserId(userId);
+    public Page<Advert> findByUserId(final Integer userId, Pageable pageable) {
+        return advertRepository.findByUserId(userId, pageable);
     }
 
 }

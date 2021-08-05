@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
+@Entity
+@Table(name = "message")
 public class Message {
 
     @Id

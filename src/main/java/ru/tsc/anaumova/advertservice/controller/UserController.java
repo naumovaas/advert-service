@@ -2,14 +2,18 @@ package ru.tsc.anaumova.advertservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.model.Advert;
 import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.service.AdvertService;
 import ru.tsc.anaumova.advertservice.service.UserService;
 
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/users")
@@ -27,9 +31,8 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка пользователей")
-    //TODO добавить фильтр
-    public Iterable<User> showUsers(){
-        return userService.findAll();
+    public Page<User> showUsers(Pageable pageable){
+        return userService.findAll(pageable);
     }
 
     @GetMapping("/{userId}")
@@ -40,8 +43,8 @@ public class UserController {
 
     @GetMapping("/{userId}/sales-history")
     @Operation(summary = "Просмотр истории объявлений пользователя")
-    public Iterable<Advert> showUserSalesHistory(@PathVariable Integer userId) {
-        return advertService.findByUserId(userId);
+    public Page<Advert> showUserSalesHistory(@PathVariable Integer userId, Pageable pageable) {
+        return advertService.findByUserId(userId, pageable);
     }
 
     @PostMapping
@@ -58,8 +61,9 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
-    public void deleteUser(@PathVariable String userId){
-        //return redirect /
+    public String deleteUser(@PathVariable Long userId){
+        userService.deleteById(userId);
+        return "redirect:/users";
     }
 
 }

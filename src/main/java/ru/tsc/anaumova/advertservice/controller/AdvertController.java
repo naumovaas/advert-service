@@ -10,6 +10,7 @@ public class AdvertController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка объявлений")
+    //TODO добавить фильтр
     public void showAdverts(@RequestParam(name = "filter", required = false) final String filter){
         //return list
     }
