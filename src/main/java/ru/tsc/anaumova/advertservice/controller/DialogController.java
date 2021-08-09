@@ -14,10 +14,10 @@ public class DialogController {
         //return list
     }
 
-    @GetMapping("/{dialogId}")
-    @Operation(summary = "Просмотр диалога")
-    public void showMessages(@PathVariable String dialogId){
-        //return list
-    }
+//    @GetMapping("/{dialogId}")
+//    @Operation(summary = "Просмотр диалога")
+//    public void showMessages(@PathVariable String dialogId){
+//        //return list
+//    }
 
 }

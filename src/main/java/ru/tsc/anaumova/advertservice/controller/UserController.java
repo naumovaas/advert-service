@@ -3,12 +3,11 @@ package ru.tsc.anaumova.advertservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
+import ru.tsc.anaumova.advertservice.dto.AdvertDto;
+import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
-import ru.tsc.anaumova.advertservice.model.Advert;
 import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.service.AdvertService;
 import ru.tsc.anaumova.advertservice.service.UserService;
@@ -31,19 +30,19 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка пользователей")
-    public Page<User> showUsers(Pageable pageable){
+    public Page<UserDto> showUsers(Pageable pageable){
         return userService.findAll(pageable);
     }
 
     @GetMapping("/{userId}")
     @Operation(summary = "Просмотр профиля пользователя")
-    public User showUserDetails(@PathVariable Long userId) throws EntityNotFoundException {
+    public UserDto showUserDetails(@PathVariable Long userId) throws EntityNotFoundException {
         return userService.findById(userId);
     }
 
     @GetMapping("/{userId}/sales-history")
     @Operation(summary = "Просмотр истории объявлений пользователя")
-    public Page<Advert> showUserSalesHistory(@PathVariable Integer userId, Pageable pageable) {
+    public Page<AdvertDto> showUserSalesHistory(@PathVariable Integer userId, Pageable pageable) {
         return advertService.findByUserId(userId, pageable);
     }
 

@@ -10,7 +10,7 @@ public class CommentController {
 
     @PostMapping
     @Operation(summary = "Добавить комментарий")
-    public void addComment(@RequestBody Comment comment){
+    public void addComment(@RequestBody String text){
         //return redirect /{id}
     }
 
