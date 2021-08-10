@@ -10,13 +10,13 @@ public class CommentController {
 
     @PostMapping
     @Operation(summary = "Добавить комментарий")
-    public void addComment(@RequestBody String text){
+    public void addComment(@PathVariable String advertId, @RequestBody String text){
         //return redirect /{id}
     }
 
     @PutMapping
     @Operation(summary = "Редактировать комментарий")
-    public void updateComment(@RequestBody Comment comment){
+    public void updateComment(@PathVariable String advertId, @RequestBody Comment comment){
         //return redirect /advert/{id}
     }
 

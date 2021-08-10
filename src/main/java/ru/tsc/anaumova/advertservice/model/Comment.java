@@ -23,12 +23,18 @@ public class Comment {
     @Column(name = "date")
     private Timestamp date;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User author;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User author;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "advert_id")
+//    private Advert advert;
 
-    @ManyToOne
-    @JoinColumn(name = "advert_id")
-    private Advert advert;
+    @Column(name = "user_id")
+    private int userId;
+
+    @Column(name = "advert_id")
+    private int advertId;
 
 }

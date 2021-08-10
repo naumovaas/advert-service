@@ -1,10 +1,13 @@
 package ru.tsc.anaumova.advertservice.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.tsc.anaumova.advertservice.model.Category;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
+@Getter
+@Setter
 public class AdvertDto {
 
     private Long advertId;

@@ -23,8 +23,7 @@ public class Message {
     @Column(name = "date")
     private Timestamp date;
 
-    @ManyToOne
-    @JoinColumn(name = "dialog_id")
-    private Dialog dialog;
+    @Column(name = "dialog_id")
+    private int dialogId;
 
 }

@@ -32,12 +32,15 @@ public class Advert {
     @Column(name = "user_id")
     private int userId;
 
+    @Column(name = "category_id")
+    private int categoryId;
+
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id", insertable = false, updatable = false)
 //    private User author;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "category_id")
+//    private Category category;
 
 }

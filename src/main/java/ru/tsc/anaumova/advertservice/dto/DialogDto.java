@@ -1,7 +1,10 @@
 package ru.tsc.anaumova.advertservice.dto;
 
-import ru.tsc.anaumova.advertservice.model.User;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class DialogDto {
 
     private Long dialogId;

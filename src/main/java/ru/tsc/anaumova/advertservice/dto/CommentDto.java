@@ -1,9 +1,12 @@
 package ru.tsc.anaumova.advertservice.dto;
 
-import ru.tsc.anaumova.advertservice.model.User;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
+@Getter
+@Setter
 public class CommentDto {
 
     private Long commentId;

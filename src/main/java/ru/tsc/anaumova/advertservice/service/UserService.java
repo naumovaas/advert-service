@@ -32,15 +32,14 @@ public class UserService {
                 .stream()
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
-        return new PageImpl<UserDto>(users);
+        return new PageImpl<>(users);
     }
 
-    public UserDto findById(final long id) throws EntityNotFoundException {
+    public UserDto findById(final long userId) throws EntityNotFoundException {
         return userMapper.toDto(
                 userRepository
-                        .findById(id)
-                        .orElseThrow(
-                () -> new EntityNotFoundException("Ошибка. Не найден пользователь с ID - " + id))
+                        .findById(userId)
+                        .orElseThrow(EntityNotFoundException::new)
         );
     }
 

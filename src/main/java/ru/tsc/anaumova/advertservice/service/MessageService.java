@@ -32,7 +32,7 @@ public class MessageService {
                 .stream()
                 .map(messageMapper::toDto)
                 .collect(Collectors.toList());
-                return new PageImpl<MessageDto>(messages);
+                return new PageImpl<>(messages);
     }
 
 }

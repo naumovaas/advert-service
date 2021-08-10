@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
+import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.mapper.Mapper;
 import ru.tsc.anaumova.advertservice.model.Advert;
 import ru.tsc.anaumova.advertservice.repository.AdvertRepository;
@@ -31,7 +32,23 @@ public class AdvertService {
                 .stream()
                 .map(advertMapper::toDto)
                 .collect(Collectors.toList());
-        return new PageImpl<AdvertDto>(adverts);
+        return new PageImpl<>(adverts);
+    }
+
+    public Page<AdvertDto> findAllByFilter(String filter, Pageable pageable) {
+        List<AdvertDto> adverts = advertRepository.findAll(pageable)
+                .stream()
+                .map(advertMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(adverts);
+    }
+
+    public AdvertDto findById(Long advertId) throws EntityNotFoundException {
+        return advertMapper.toDto(
+                advertRepository
+                        .findById(advertId)
+                        .orElseThrow(EntityNotFoundException::new)
+        );
     }
 
 }
