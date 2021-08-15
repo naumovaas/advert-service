@@ -12,4 +12,6 @@ public interface AdvertRepository  extends PagingAndSortingRepository<Advert, Lo
 
     Page<Advert> findByUserId(Integer userId, Pageable pageable);
 
+    Page<Advert> findByCategoryId(Integer categoryId, Pageable pageable);
+
 }

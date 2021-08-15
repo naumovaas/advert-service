@@ -35,12 +35,14 @@ public class AdvertService {
         return new PageImpl<>(adverts);
     }
 
-    public Page<AdvertDto> findAllByFilter(String filter, Pageable pageable) {
-        List<AdvertDto> adverts = advertRepository.findAll(pageable)
+    public Page<AdvertDto> findAllByFilter(Integer categoryId, String status, Pageable pageable) {
+        List<AdvertDto> adverts = advertRepository.findByCategoryId(categoryId, pageable)
                 .stream()
+                .filter(a -> (status == null || status.isEmpty()) || a.getStatus().equals(status))
                 .map(advertMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(adverts);
+
     }
 
     public AdvertDto findById(Long advertId) throws EntityNotFoundException {
@@ -49,6 +51,24 @@ public class AdvertService {
                         .findById(advertId)
                         .orElseThrow(EntityNotFoundException::new)
         );
+    }
+
+    public void save(AdvertDto advertDto) {
+        final Advert advert = advertMapper.toEntity(advertDto);
+        advertRepository.save(advert);
+    }
+
+    public void update(AdvertDto advertDto) throws EntityNotFoundException {
+        final Advert advert = advertRepository.findById(advertDto.getAdvertId()).orElseThrow(EntityNotFoundException::new);
+        advert.setCategoryId(advertDto.getCategoryId());
+        advert.setPriorityFlag(advertDto.isPriorityFlag());
+        advert.setStatus(advertDto.getStatus());
+        advert.setText(advertDto.getText());
+        advertRepository.save(advert);
+    }
+
+    public void delete(Long advertId) {
+        advertRepository.deleteById(advertId);
     }
 
 }

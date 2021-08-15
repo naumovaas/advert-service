@@ -11,6 +11,8 @@ public class MessageDto {
 
     private Long messageId;
 
+    private int dialogId;
+
     private String text;
 
     private Timestamp date;

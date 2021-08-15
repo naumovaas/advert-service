@@ -2,7 +2,6 @@ package ru.tsc.anaumova.advertservice.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.tsc.anaumova.advertservice.model.Category;
 
 @Getter
 @Setter
@@ -12,6 +11,6 @@ public class CategoryDto {
 
     private String title;
 
-    private Category parentCategory;
+    private int parentCategoryId;
 
 }

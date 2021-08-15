@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
-import ru.tsc.anaumova.advertservice.model.Advert;
 import ru.tsc.anaumova.advertservice.service.AdvertService;
 
 @RestController
@@ -25,10 +24,10 @@ public class AdvertController {
     @Operation(summary = "Просмотр списка объявлений")
     public Page<AdvertDto> showAdverts(
             @PathVariable Integer categoryId,
-            @RequestParam(name = "filter", required = false) final String filter,
+            @RequestParam(name = "status", required = false) final String status,
             Pageable pageable
     ){
-        return advertService.findAllByFilter(filter, pageable);
+        return advertService.findAllByFilter(categoryId, status, pageable);
     }
 
     @GetMapping("/{advertId}")
@@ -40,20 +39,23 @@ public class AdvertController {
 
     @PostMapping
     @Operation(summary = "Добавить объявление")
-    public void addAdvert(@PathVariable Integer categoryId, @RequestBody Advert advert){
-        //return redirect /{id}
+    public String addAdvert(@PathVariable Integer categoryId, @RequestBody AdvertDto advert){
+        advertService.save(advert);
+        return "redirect:/categories/" + categoryId + "/adverts";
     }
 
     @PutMapping
     @Operation(summary = "Редактировать объявление")
-    public void updateAdvert(@PathVariable Integer categoryId, @RequestBody Advert advert){
-        //return redirect /{id}
+    public String updateAdvert(@PathVariable Integer categoryId, @RequestBody AdvertDto advert) throws EntityNotFoundException {
+        advertService.update(advert);
+        return "redirect:/categories/" + categoryId + "/adverts";
     }
 
     @DeleteMapping("/{advertId}")
     @Operation(summary = "Удалить объявление")
-    public void deleteAdvert(@PathVariable Integer categoryId, @PathVariable String advertId){
-        //return redirect /
+    public String deleteAdvert(@PathVariable Integer categoryId, @PathVariable Long advertId){
+        advertService.delete(advertId);
+        return "redirect:/categories/" + categoryId + "/adverts";
     }
 
 }

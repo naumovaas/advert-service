@@ -22,6 +22,6 @@ public class AdvertDto {
 
     private int userId;
 
-    private Category category;
+    private int categoryId;
 
 }

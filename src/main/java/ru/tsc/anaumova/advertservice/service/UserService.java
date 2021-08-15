@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.tsc.anaumova.advertservice.dto.MessageDto;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.mapper.Mapper;
+import ru.tsc.anaumova.advertservice.model.Message;
 import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.repository.UserRepository;
 
@@ -43,8 +45,24 @@ public class UserService {
         );
     }
 
-    public void deleteById(final Long id) {
-        userRepository.deleteById(id);
+    public void save(UserDto userDto) {
+        final User user = userMapper.toEntity(userDto);
+        userRepository.save(user);
+    }
+
+    public void update(UserDto userDto) throws EntityNotFoundException {
+        final User user = userRepository
+                .findById(userDto.getUserId())
+                .orElseThrow(EntityNotFoundException::new);
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setUsername(userDto.getUsername());
+        user.setRating(userDto.getRating());
+        userRepository.save(user);
+    }
+
+    public void delete(Long userId) {
+        userRepository.deleteById(userId);
     }
 
 }

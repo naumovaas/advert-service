@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
-import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.service.AdvertService;
 import ru.tsc.anaumova.advertservice.service.UserService;
 
@@ -48,20 +47,22 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Добавить пользователя")
-    public void addUser(@RequestBody User user){
-        //return redirect /{id}
+    public String addUser(@RequestBody UserDto userDto){
+        userService.save(userDto);
+        return "redirect:/users/" + userDto.getUserId();
     }
 
     @PutMapping
     @Operation(summary = "Редактировать профиль пользователя")
-    public void updateUser(@RequestBody User user){
-        //return redirect /{id}
+    public String updateUser(@RequestBody UserDto userDto) throws EntityNotFoundException {
+        userService.update(userDto);
+        return "redirect:/users/" + userDto.getUserId();
     }
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
     public String deleteUser(@PathVariable Long userId){
-        userService.deleteById(userId);
+        userService.delete(userId);
         return "redirect:/users";
     }
 

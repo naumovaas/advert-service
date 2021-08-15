@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.MessageDto;
-import ru.tsc.anaumova.advertservice.model.Message;
+import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.service.MessageService;
 
 @RestController
@@ -28,20 +28,23 @@ public class MessageController {
 
     @PostMapping
     @Operation(summary = "Отправить сообщение")
-    public void addComment(@RequestBody String text){
-        //return redirect /messages
+    public String addComment(@PathVariable String dialogId, @RequestBody MessageDto messageDto){
+        messageService.save(messageDto);
+        return "redirect:/dialogues/" + dialogId;
     }
 
     @PutMapping
     @Operation(summary = "Редактировать сообщение")
-    public void updateComment(@RequestBody Message message){
-        //return redirect /messages
+    public String updateComment(@PathVariable String dialogId, @RequestBody MessageDto messageDto) throws EntityNotFoundException {
+        messageService.update(messageDto);
+        return "redirect:/dialogues/" + dialogId;
     }
 
     @DeleteMapping("/{messageId}")
     @Operation(summary = "Удалить сообщение")
-    public void deleteComment(@PathVariable String dialogId, @PathVariable String messageId){
-        //return redirect /messages
+    public String deleteComment(@PathVariable String dialogId, @PathVariable Long messageId){
+        messageService.delete(messageId);
+        return "redirect:/dialogues/" + dialogId;
     }
 
 }
