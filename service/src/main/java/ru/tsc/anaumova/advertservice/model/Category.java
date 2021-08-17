@@ -24,6 +24,6 @@ public class Category {
 //    private Category parentCategory;
 
     @Column(name = "parent_category_id")
-    private int parentCategoryId;
+    private Integer parentCategoryId;
 
 }

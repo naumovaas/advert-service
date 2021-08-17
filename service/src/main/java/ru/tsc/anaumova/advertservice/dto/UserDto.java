@@ -15,6 +15,6 @@ public class UserDto {
 
     private String lastName;
 
-    private int rating;
+    private Integer rating;
 
 }

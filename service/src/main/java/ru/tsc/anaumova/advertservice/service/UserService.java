@@ -39,12 +39,12 @@ public class UserService {
         return new PageImpl<>(users);
     }
 
-    public UserDto findById(final long userId) throws EntityNotFoundException {
-        return userMapperDto.toDto(
+    public String findById(final long userId) throws EntityNotFoundException {
+        return userDtoMapperJson.toJson(userMapperDto.toDto(
                 userRepository
                         .findById(userId)
                         .orElseThrow(EntityNotFoundException::new)
-        );
+        ));
     }
 
     public void save(String jsonString) {

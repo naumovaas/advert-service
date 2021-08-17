@@ -9,6 +9,9 @@ import ru.tsc.anaumova.advertservice.mapper.MapperJson;
 import ru.tsc.anaumova.advertservice.model.Comment;
 import ru.tsc.anaumova.advertservice.repository.CommentRepository;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 @Service
 public class CommentService {
 
@@ -28,6 +31,7 @@ public class CommentService {
         public void save(String jsonString) {
             final CommentDto commentDto = commentDtoMapperJson.toEntity(jsonString);
             final Comment comment = commentMapperDto.toEntity(commentDto);
+            comment.setDate(new Timestamp(new Date().getTime()));
             commentRepository.save(comment);
         }
 

@@ -26,6 +26,6 @@ public class User {
     private String lastName;
 
     @Column(name = "rating")
-    private int rating;
+    private Integer rating;
 
 }

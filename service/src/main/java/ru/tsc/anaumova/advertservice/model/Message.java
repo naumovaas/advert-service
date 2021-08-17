@@ -24,6 +24,6 @@ public class Message {
     private Timestamp date;
 
     @Column(name = "dialog_id")
-    private int dialogId;
+    private Integer dialogId;
 
 }

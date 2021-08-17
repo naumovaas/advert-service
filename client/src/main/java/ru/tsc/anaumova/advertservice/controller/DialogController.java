@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.DialogDto;
 import ru.tsc.anaumova.advertservice.service.DialogService;
@@ -21,8 +23,8 @@ public class DialogController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка диалогов")
-    public Page<DialogDto> showDialogList(Pageable pageable){
-        return dialogService.findAll(pageable);
+    public ResponseEntity<Page<DialogDto>> showDialogList(Pageable pageable){
+        return new ResponseEntity<>(dialogService.findAll(pageable), HttpStatus.OK);
     }
 
 }

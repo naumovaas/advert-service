@@ -11,6 +11,6 @@ public class CategoryDto {
 
     private String title;
 
-    private int parentCategoryId;
+    private Integer parentCategoryId;
 
 }

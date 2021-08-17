@@ -11,7 +11,8 @@ public class MapperJson<E> {
     }
 
     public String toJson(E entity) {
-        return null;
+        final Gson gson = new Gson();
+        return gson.toJson(entity);
     }
 
     public E toEntity(String jsonString) {

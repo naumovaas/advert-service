@@ -17,7 +17,7 @@ public class AdvertDto {
 
     private Timestamp date;
 
-    private boolean priorityFlag;
+    private Boolean priorityFlag;
 
     private int userId;
 

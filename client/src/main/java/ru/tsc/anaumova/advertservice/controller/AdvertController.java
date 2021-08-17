@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -22,18 +24,18 @@ public class AdvertController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка объявлений")
-    public Page<AdvertDto> showAdverts(
+    public ResponseEntity<Page<AdvertDto>> showAdverts(
             @PathVariable Integer categoryId,
             @RequestParam(name = "status", required = false) final String status,
             Pageable pageable
     ){
-        return advertService.findAllByFilter(categoryId, status, pageable);
+        return new ResponseEntity<>(advertService.findAllByFilter(categoryId, status, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{advertId}")
     @Operation(summary = "Просмотр объявления")
-    public AdvertDto showAdvertDetails(@PathVariable Integer categoryId, @PathVariable Long advertId) throws EntityNotFoundException {
-        return advertService.findById(advertId);
+    public ResponseEntity<String> showAdvertDetails(@PathVariable Integer categoryId, @PathVariable Long advertId) throws EntityNotFoundException {
+        return new ResponseEntity<>(advertService.findById(advertId), HttpStatus.OK);
     }
 
     @PostMapping

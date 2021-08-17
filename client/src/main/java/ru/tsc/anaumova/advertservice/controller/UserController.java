@@ -3,6 +3,8 @@ package ru.tsc.anaumova.advertservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
@@ -27,20 +29,20 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка пользователей")
-    public Page<UserDto> showUsers(Pageable pageable){
-        return userService.findAll(pageable);
+    public ResponseEntity<Page<UserDto>> showUsers(Pageable pageable){
+        return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
     @Operation(summary = "Просмотр профиля пользователя")
-    public UserDto showUserDetails(@PathVariable Long userId) throws EntityNotFoundException {
-        return userService.findById(userId);
+    public ResponseEntity<String> showUserDetails(@PathVariable Long userId) throws EntityNotFoundException {
+        return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/sales-history")
     @Operation(summary = "Просмотр истории объявлений пользователя")
-    public Page<AdvertDto> showUserSalesHistory(@PathVariable Integer userId, Pageable pageable) {
-        return advertService.findByUserId(userId, pageable);
+    public ResponseEntity<Page<AdvertDto>> showUserSalesHistory(@PathVariable Integer userId, Pageable pageable) {
+        return new ResponseEntity<>(advertService.findByUserId(userId, pageable), HttpStatus.OK);
     }
 
     @PostMapping
@@ -48,7 +50,6 @@ public class UserController {
     public String addUser(@RequestParam String userJson){
         userService.save(userJson);
         return "redirect:/users/";
-                //+ userDto.getUserId();
     }
 
     @PutMapping
@@ -56,7 +57,6 @@ public class UserController {
     public String updateUser(@RequestParam String userJson) throws EntityNotFoundException {
         userService.update(userJson);
         return "redirect:/users/";
-        //+ userDto.getUserId();
     }
 
     @DeleteMapping("/{userId}")

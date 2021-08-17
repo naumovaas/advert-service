@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.MessageDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -22,8 +24,8 @@ public class MessageController {
 
     @GetMapping
     @Operation(summary = "Просмотр сообщений")
-    public Page<MessageDto> showMessages(@PathVariable Integer dialogId, Pageable pageable){
-        return messageService.findByDialogId(dialogId, pageable);
+    public ResponseEntity<Page<MessageDto>> showMessages(@PathVariable Integer dialogId, Pageable pageable){
+        return new ResponseEntity<>(messageService.findByDialogId(dialogId, pageable), HttpStatus.OK);
     }
 
     @PostMapping

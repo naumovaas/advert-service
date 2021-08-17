@@ -27,13 +27,13 @@ public class Advert {
     private Timestamp date;
 
     @Column(name = "priority_flag")
-    private boolean priorityFlag;
+    private Boolean priorityFlag;
 
     @Column(name = "user_id")
-    private int userId;
+    private Integer userId;
 
     @Column(name = "category_id")
-    private int categoryId;
+    private Integer categoryId;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id", insertable = false, updatable = false)

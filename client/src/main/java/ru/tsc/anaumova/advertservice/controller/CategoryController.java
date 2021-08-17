@@ -2,6 +2,8 @@ package ru.tsc.anaumova.advertservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.CategoryDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -22,12 +24,12 @@ public class CategoryController {
 
     @GetMapping
     @Operation(summary = "Просмотр категорий")
-    public List<CategoryDto> showCategoryList(
+    public ResponseEntity<List<CategoryDto>> showCategoryList(
             @RequestParam(name = "parentCategoryId", required = false) final Integer parentCategoryId
     ) {
         List<CategoryDto> categories = categoryService.findByParentCategoryId(parentCategoryId);
         //if (categories.size() <= 0) return "redirect:/categories/" + parentCategoryId + "/adverts";
-        return categories;
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @PostMapping

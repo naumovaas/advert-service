@@ -11,7 +11,7 @@ public class MessageDto {
 
     private Long messageId;
 
-    private int dialogId;
+    private Integer dialogId;
 
     private String text;
 

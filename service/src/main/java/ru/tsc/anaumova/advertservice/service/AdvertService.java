@@ -51,18 +51,19 @@ public class AdvertService {
         return new PageImpl<>(adverts);
     }
 
-    public AdvertDto findById(Long advertId) throws EntityNotFoundException {
-        return advertMapperDto.toDto(
+    public String findById(Long advertId) throws EntityNotFoundException {
+        return advertDtoMapperJson.toJson(advertMapperDto.toDto(
                 advertRepository
                         .findById(advertId)
                         .orElseThrow(EntityNotFoundException::new)
-        );
+        ));
     }
 
     public void save(String jsonString) {
         final AdvertDto advertDto = advertDtoMapperJson.toEntity(jsonString);
         final Advert advert = advertMapperDto.toEntity(advertDto);
         advert.setDate(new Timestamp(new Date().getTime()));
+        advert.setPriorityFlag(false);
         advert.setStatus(Status.OPEN.getDisplayName());
         advertRepository.save(advert);
     }
@@ -71,7 +72,7 @@ public class AdvertService {
         final AdvertDto advertDto = advertDtoMapperJson.toEntity(jsonString);
         final Advert advert = advertRepository.findById(advertDto.getAdvertId()).orElseThrow(EntityNotFoundException::new);
         advert.setCategoryId(advertDto.getCategoryId());
-        advert.setPriorityFlag(advertDto.isPriorityFlag());
+        advert.setPriorityFlag(advertDto.getPriorityFlag());
         advert.setStatus(advertDto.getStatus());
         advert.setText(advertDto.getText());
         advertRepository.save(advert);

@@ -32,9 +32,9 @@ public class Comment {
 //    private Advert advert;
 
     @Column(name = "user_id")
-    private int userId;
+    private Integer userId;
 
     @Column(name = "advert_id")
-    private int advertId;
+    private Integer advertId;
 
 }

@@ -12,6 +12,8 @@ import ru.tsc.anaumova.advertservice.mapper.MapperJson;
 import ru.tsc.anaumova.advertservice.model.Message;
 import ru.tsc.anaumova.advertservice.repository.MessageRepository;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,7 @@ public class MessageService {
     public void save(String jsonString) {
         final MessageDto messageDto = messageDtoMapperJson.toEntity(jsonString);
         final Message message = messageMapperDto.toEntity(messageDto);
+        message.setDate(new Timestamp(new Date().getTime()));
         messageRepository.save(message);
     }
 
