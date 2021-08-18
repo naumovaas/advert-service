@@ -7,4 +7,6 @@ import ru.tsc.anaumova.advertservice.model.User;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
+    User findByUsername(String username);
+
 }

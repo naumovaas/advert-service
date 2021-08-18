@@ -1,6 +1,7 @@
 CREATE TABLE USERS (
   id SERIAL PRIMARY KEY,
   username varchar(30) NOT NULL,
+  password varchar(128) NOT NULL,
   first_name varchar(30),
   last_name varchar(30),
   rating real

@@ -30,15 +30,15 @@ public class MessageController {
 
     @PostMapping
     @Operation(summary = "Отправить сообщение")
-    public String addComment(@PathVariable String dialogId, @RequestParam String messageJson){
-        messageService.save(messageJson);
+    public String addComment(@PathVariable String dialogId, @RequestParam String messageDtoJson){
+        messageService.save(messageDtoJson);
         return "redirect:/dialogues/" + dialogId;
     }
 
     @PutMapping
     @Operation(summary = "Редактировать сообщение")
-    public String updateComment(@PathVariable String dialogId, @RequestParam String messageJson) throws EntityNotFoundException {
-        messageService.update(messageJson);
+    public String updateComment(@PathVariable String dialogId, @RequestParam String messageDtoJson) throws EntityNotFoundException {
+        messageService.update(messageDtoJson);
         return "redirect:/dialogues/" + dialogId;
     }
 

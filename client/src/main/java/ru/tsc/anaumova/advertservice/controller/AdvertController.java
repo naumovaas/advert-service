@@ -40,15 +40,15 @@ public class AdvertController {
 
     @PostMapping
     @Operation(summary = "Добавить объявление")
-    public String addAdvert(@PathVariable Integer categoryId, @RequestParam String advertJson){
-        advertService.save(advertJson);
+    public String addAdvert(@PathVariable Integer categoryId, @RequestParam String advertDtoJson){
+        advertService.save(advertDtoJson);
         return "redirect:/categories/" + categoryId + "/adverts";
     }
 
     @PutMapping
     @Operation(summary = "Редактировать объявление")
-    public String updateAdvert(@PathVariable Integer categoryId, @RequestParam String advertJson) throws EntityNotFoundException {
-        advertService.update(advertJson);
+    public String updateAdvert(@PathVariable Integer categoryId, @RequestParam String advertDtoJson) throws EntityNotFoundException {
+        advertService.update(advertDtoJson);
         return "redirect:/categories/" + categoryId + "/adverts";
     }
 

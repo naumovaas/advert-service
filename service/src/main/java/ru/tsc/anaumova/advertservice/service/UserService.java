@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -20,15 +21,21 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private final MapperDto<User, UserDto> userMapperDto;
 
     private final MapperJson<UserDto> userDtoMapperJson;
 
+    private final MapperJson<User> userMapperJson;
+
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userMapperDto = new MapperDto<>(UserDto.class, User.class);
         this.userDtoMapperJson = new MapperJson<>(UserDto.class);
+        this.userMapperJson = new MapperJson<>(User.class);
     }
 
     public Page<UserDto> findAll(Pageable pageable){
@@ -48,21 +55,24 @@ public class UserService {
     }
 
     public void save(String jsonString) {
-        final UserDto userDto = userDtoMapperJson.toEntity(jsonString);
-        final User user = userMapperDto.toEntity(userDto);
+        final User user = userMapperJson.toEntity(jsonString);
+        final String password = user.getPassword();
+        final String passwordEncoded = bCryptPasswordEncoder.encode(password);
+        user.setPassword(passwordEncoded);
         userRepository.save(user);
     }
 
     public void update(String jsonString) throws EntityNotFoundException {
-        final UserDto userDto = userDtoMapperJson.toEntity(jsonString);
-        final User user = userRepository
-                .findById(userDto.getUserId())
+        final User user = userMapperJson.toEntity(jsonString);
+        final User userFromDb = userRepository
+                .findById(user.getUserId())
                 .orElseThrow(EntityNotFoundException::new);
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setUsername(userDto.getUsername());
-        user.setRating(userDto.getRating());
-        userRepository.save(user);
+        userFromDb.setFirstName(user.getFirstName());
+        userFromDb.setLastName(user.getLastName());
+        userFromDb.setUsername(user.getUsername());
+        userFromDb.setRating(user.getRating());
+        //userFromDb.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(userFromDb);
     }
 
     public void delete(Long userId) {

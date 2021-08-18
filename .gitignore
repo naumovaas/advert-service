@@ -88,3 +88,5 @@ nb-configuration.xml
 ##############################
 advert_service_client.log
 advert_service_service.log
+advert_service_client.*.gz
+advert_service_service.*.gz

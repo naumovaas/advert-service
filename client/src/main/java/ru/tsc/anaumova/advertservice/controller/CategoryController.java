@@ -34,15 +34,15 @@ public class CategoryController {
 
     @PostMapping
     @Operation(summary = "Добавить категорию")
-    public String addCategory(@RequestParam String categoryJson){
-        categoryService.save(categoryJson);
+    public String addCategory(@RequestParam String categoryDtoJson){
+        categoryService.save(categoryDtoJson);
         return "redirect:/categories";
     }
 
     @PutMapping
     @Operation(summary = "Редактировать категорию")
-    public String updateCategory(@RequestParam String categoryJson) throws EntityNotFoundException {
-        categoryService.update(categoryJson);
+    public String updateCategory(@RequestParam String categoryDtoJson) throws EntityNotFoundException {
+        categoryService.update(categoryDtoJson);
         return "redirect:/categories";
     }
 

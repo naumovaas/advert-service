@@ -59,6 +59,8 @@ public class UserController {
         return "redirect:/users/";
     }
 
+    //TODO обновление пароля отдельным контроллером
+
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
     public String deleteUser(@PathVariable Long userId){

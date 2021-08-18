@@ -19,15 +19,15 @@ public class CommentController {
 
     @PostMapping
     @Operation(summary = "Добавить комментарий")
-    public String addComment(@PathVariable String advertId, @RequestParam String commentJson){
-        commentService.save(commentJson);
+    public String addComment(@PathVariable String advertId, @RequestParam String commentDtoJson){
+        commentService.save(commentDtoJson);
         return "redirect:/adverts/" + advertId + "/comments";
     }
 
     @PutMapping
     @Operation(summary = "Редактировать комментарий")
-    public String updateComment(@PathVariable String advertId, @RequestParam String commentJson) throws EntityNotFoundException {
-        commentService.update(commentJson);
+    public String updateComment(@PathVariable String advertId, @RequestParam String commentDtoJson) throws EntityNotFoundException {
+        commentService.update(commentDtoJson);
         return "redirect:/adverts/" + advertId + "/comments";
     }
 
