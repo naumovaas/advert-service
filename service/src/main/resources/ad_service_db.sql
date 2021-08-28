@@ -8,6 +8,7 @@ CREATE TABLE USERS (
 );
 
 CREATE TABLE USERS_ROLE (
+  id SERIAL PRIMARY KEY,
   user_id int NOT NULL,
   role varchar(20) NOT NULL,
   

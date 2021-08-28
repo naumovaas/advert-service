@@ -54,8 +54,8 @@ public class UserController {
 
     @PutMapping
     @Operation(summary = "Редактировать профиль пользователя")
-    public String updateUser(@RequestParam String userJson) throws EntityNotFoundException {
-        userService.update(userJson);
+    public String updateUser(@RequestParam String userDtoJson) throws EntityNotFoundException {
+        userService.update(userDtoJson);
         return "redirect:/users/";
     }
 

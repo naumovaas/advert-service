@@ -2,11 +2,14 @@ package ru.tsc.anaumova.advertservice.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,9 +37,13 @@ public class User implements UserDetails {
     @Column(name = "rating")
     private Integer rating;
 
+    @OneToMany(mappedBy = "user")
+    @Cascade(CascadeType.ALL)
+    private List<UsersRole> roles;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles;
     }
 
     @Override

@@ -63,15 +63,14 @@ public class UserService {
     }
 
     public void update(String jsonString) throws EntityNotFoundException {
-        final User user = userMapperJson.toEntity(jsonString);
+        final UserDto userDto = userDtoMapperJson.toEntity(jsonString);
         final User userFromDb = userRepository
-                .findById(user.getUserId())
+                .findById(userDto.getUserId())
                 .orElseThrow(EntityNotFoundException::new);
-        userFromDb.setFirstName(user.getFirstName());
-        userFromDb.setLastName(user.getLastName());
-        userFromDb.setUsername(user.getUsername());
-        userFromDb.setRating(user.getRating());
-        //userFromDb.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userFromDb.setFirstName(userDto.getFirstName());
+        userFromDb.setLastName(userDto.getLastName());
+        userFromDb.setUsername(userDto.getUsername());
+        userFromDb.setRating(userDto.getRating());
         userRepository.save(userFromDb);
     }
 
