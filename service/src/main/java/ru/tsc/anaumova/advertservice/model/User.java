@@ -37,7 +37,7 @@ public class User implements UserDetails {
     @Column(name = "rating")
     private Integer rating;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @Cascade(CascadeType.ALL)
     private List<UsersRole> roles;
 

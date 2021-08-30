@@ -60,6 +60,11 @@ public class UserController {
     }
 
     //TODO обновление пароля отдельным контроллером
+    @PatchMapping
+    @Operation(summary = "Изменить пароль пользователя")
+    public String updatePassword(@RequestParam String newPassword){
+        return "redirect:/users/";
+    }
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
