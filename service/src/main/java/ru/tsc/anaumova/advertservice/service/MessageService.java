@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.MessageDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -33,6 +34,7 @@ public class MessageService {
         this.messageDtoMapperJson = new MapperJson<>(MessageDto.class);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public Page<MessageDto> findByDialogId(Integer dialogId, Pageable pageable) {
         List<MessageDto> messages = messageRepository.findByDialogId(dialogId, pageable)
                 .stream()
@@ -41,6 +43,7 @@ public class MessageService {
                 return new PageImpl<>(messages);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void save(String jsonString) {
         final MessageDto messageDto = messageDtoMapperJson.toEntity(jsonString);
         final Message message = messageMapperDto.toEntity(messageDto);
@@ -48,6 +51,7 @@ public class MessageService {
         messageRepository.save(message);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void update(String jsonString) throws EntityNotFoundException {
         final MessageDto messageDto = messageDtoMapperJson.toEntity(jsonString);
         final Message message = messageRepository
@@ -57,6 +61,7 @@ public class MessageService {
         messageRepository.save(message);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void delete(Long messageId) {
         messageRepository.deleteById(messageId);
     }

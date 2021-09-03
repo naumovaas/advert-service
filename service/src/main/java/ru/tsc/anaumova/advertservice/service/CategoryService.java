@@ -1,6 +1,7 @@
 package ru.tsc.anaumova.advertservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.CategoryDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -35,12 +36,14 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Secured("ROLE_ADMIN")
     public void save(String jsonString) {
         final CategoryDto categoryDto = categoryDtoMapperJson.toEntity(jsonString);
         final Category category = categoryMapperDto.toEntity(categoryDto);
         categoryRepository.save(category);
     }
 
+    @Secured("ROLE_ADMIN")
     public void update(String jsonString) throws EntityNotFoundException {
         final CategoryDto categoryDto = categoryDtoMapperJson.toEntity(jsonString);
         final Category category = categoryRepository
@@ -51,6 +54,7 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
+    @Secured("ROLE_ADMIN")
     public void delete(Long categoryId) {
         categoryRepository.deleteById(categoryId);
     }

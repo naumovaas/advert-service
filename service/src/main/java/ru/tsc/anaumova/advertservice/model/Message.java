@@ -26,4 +26,7 @@ public class Message {
     @Column(name = "dialog_id")
     private Integer dialogId;
 
+    @Column(name = "user_id")
+    private Integer userId;
+
 }

@@ -13,6 +13,8 @@ public class MessageDto {
 
     private Integer dialogId;
 
+    private Integer userId;
+
     private String text;
 
     private Timestamp date;

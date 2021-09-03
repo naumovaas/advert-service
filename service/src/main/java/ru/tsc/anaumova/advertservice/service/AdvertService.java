@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.enumerated.Status;
@@ -34,6 +35,7 @@ public class AdvertService {
         this.advertDtoMapperJson = new MapperJson<>(AdvertDto.class);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public Page<AdvertDto> findByUserId(final Integer userId, Pageable pageable) {
         List<AdvertDto> adverts = advertRepository.findByUserId(userId, pageable)
                 .stream()
@@ -51,6 +53,7 @@ public class AdvertService {
         return new PageImpl<>(adverts);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public String findById(Long advertId) throws EntityNotFoundException {
         return advertDtoMapperJson.toJson(advertMapperDto.toDto(
                 advertRepository
@@ -59,6 +62,7 @@ public class AdvertService {
         ));
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void save(String jsonString) {
         final AdvertDto advertDto = advertDtoMapperJson.toEntity(jsonString);
         final Advert advert = advertMapperDto.toEntity(advertDto);
@@ -68,6 +72,7 @@ public class AdvertService {
         advertRepository.save(advert);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void update(String jsonString) throws EntityNotFoundException {
         final AdvertDto advertDto = advertDtoMapperJson.toEntity(jsonString);
         final Advert advert = advertRepository.findById(advertDto.getAdvertId()).orElseThrow(EntityNotFoundException::new);
@@ -78,6 +83,7 @@ public class AdvertService {
         advertRepository.save(advert);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void delete(Long advertId) {
         advertRepository.deleteById(advertId);
     }

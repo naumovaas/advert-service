@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.DialogDto;
 import ru.tsc.anaumova.advertservice.mapper.MapperDto;
@@ -26,6 +27,7 @@ public class DialogService {
         this.dialogMapperDto = new MapperDto<>(DialogDto.class, Dialog.class);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public Page<DialogDto> findAll(Pageable pageable) {
         List<DialogDto> dialogues = dialogRepository.findAll(pageable)
                 .stream()

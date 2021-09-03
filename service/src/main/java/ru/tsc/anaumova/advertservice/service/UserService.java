@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
@@ -38,6 +39,7 @@ public class UserService {
         this.userMapperJson = new MapperJson<>(User.class);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public Page<UserDto> findAll(Pageable pageable){
         List<UserDto> users = userRepository.findAll(pageable)
                 .stream()
@@ -46,6 +48,7 @@ public class UserService {
         return new PageImpl<>(users);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public String findById(final long userId) throws EntityNotFoundException {
         return userDtoMapperJson.toJson(userMapperDto.toDto(
                 userRepository
@@ -54,6 +57,7 @@ public class UserService {
         ));
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void save(String jsonString) {
         final User user = userMapperJson.toEntity(jsonString);
         final String password = user.getPassword();
@@ -62,6 +66,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void update(String jsonString) throws EntityNotFoundException {
         final UserDto userDto = userDtoMapperJson.toEntity(jsonString);
         final User userFromDb = userRepository
@@ -74,6 +79,7 @@ public class UserService {
         userRepository.save(userFromDb);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void delete(Long userId) {
         userRepository.deleteById(userId);
     }

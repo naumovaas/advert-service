@@ -75,10 +75,14 @@ CREATE TABLE DIALOG (
 CREATE TABLE MESSAGE (
   id SERIAL PRIMARY KEY,
   dialog_id int NOT NULL,
+  user_id int NOT NULL,
   text varchar(500),
   date timestamptz,
 
   CONSTRAINT FK_MESSAGE_DIALOG_ID
     FOREIGN KEY (dialog_id)
-      REFERENCES DIALOG(id)
+      REFERENCES DIALOG(id),
+  CONSTRAINT FK_MESSAGE_USER_ID
+    FOREIGN KEY (user_id)
+      REFERENCES USERS(id)
 );

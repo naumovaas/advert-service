@@ -1,6 +1,7 @@
 package ru.tsc.anaumova.advertservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.CommentDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -28,24 +29,28 @@ public class CommentService {
         this.commentDtoMapperJson = new MapperJson<>(CommentDto.class);
     }
 
-        public void save(String jsonString) {
-            final CommentDto commentDto = commentDtoMapperJson.toEntity(jsonString);
-            final Comment comment = commentMapperDto.toEntity(commentDto);
-            comment.setDate(new Timestamp(new Date().getTime()));
-            commentRepository.save(comment);
-        }
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public void save(String jsonString) {
+        final CommentDto commentDto = commentDtoMapperJson.toEntity(jsonString);
+        final Comment comment = commentMapperDto.toEntity(commentDto);
+        comment.setDate(new Timestamp(new Date().getTime()));
+        commentRepository.save(comment);
+    }
 
-        public void update(String jsonString) throws EntityNotFoundException {
-            final CommentDto commentDto = commentDtoMapperJson.toEntity(jsonString);
-            final Comment comment = commentRepository
-                    .findById(commentDto.getCommentId())
-                    .orElseThrow(EntityNotFoundException::new);
-            comment.setText(commentDto.getText());
-            commentRepository.save(comment);
-        }
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public void update(String jsonString) throws EntityNotFoundException {
+        final CommentDto commentDto = commentDtoMapperJson.toEntity(jsonString);
+        final Comment comment = commentRepository
+                .findById(commentDto.getCommentId())
+                .orElseThrow(EntityNotFoundException::new);
+        comment.setText(commentDto.getText());
+        commentRepository.save(comment);
+    }
 
-        public void delete(Long commentId) {
-            commentRepository.deleteById(commentId);
-        }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public void delete(Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 
 }
