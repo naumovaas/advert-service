@@ -15,6 +15,8 @@ public class CommentDto {
 
     private Timestamp date;
 
-    //private User author;
+    private Integer advertId;
+
+    private Integer userId;
 
 }

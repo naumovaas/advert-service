@@ -29,4 +29,8 @@ public class Message {
     @Column(name = "user_id")
     private Integer userId;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User author;
+
 }

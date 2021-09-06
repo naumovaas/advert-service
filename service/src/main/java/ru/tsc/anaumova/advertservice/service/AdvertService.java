@@ -88,4 +88,11 @@ public class AdvertService {
         advertRepository.deleteById(advertId);
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public void setPriorityFlag(Long advertId) throws EntityNotFoundException {
+        final Advert advert = advertRepository.findById(advertId).orElseThrow(EntityNotFoundException::new);
+        advert.setPriorityFlag(true);
+        advertRepository.save(advert);
+    }
+
 }

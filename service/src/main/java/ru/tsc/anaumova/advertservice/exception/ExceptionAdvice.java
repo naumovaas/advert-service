@@ -15,4 +15,10 @@ public class ExceptionAdvice {
         return new ResponseEntity<>("Record not found...", HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({IncorrectPasswordException.class})
+    @ResponseBody
+    public ResponseEntity<String> handleIncorrectPasswordException() {
+        return new ResponseEntity<>("Incorrect old password entered...", HttpStatus.FORBIDDEN);
+    }
+
 }

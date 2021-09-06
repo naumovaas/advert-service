@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
+import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
 import ru.tsc.anaumova.advertservice.service.AdvertService;
 import ru.tsc.anaumova.advertservice.service.UserService;
 
@@ -59,11 +60,15 @@ public class UserController {
         return "redirect:/users/";
     }
 
-    //TODO обновление пароля отдельным контроллером
     @PatchMapping
     @Operation(summary = "Изменить пароль пользователя")
-    public String updatePassword(@RequestParam String newPassword){
-        return "redirect:/users/";
+    public String updatePassword(
+            @RequestParam Long userId,
+            @RequestParam String oldPassword,
+            @RequestParam String newPassword
+    ) throws IncorrectPasswordException, EntityNotFoundException {
+        userService.updatePassword(userId, oldPassword, newPassword);
+        return "redirect:/users//{userId}";
     }
 
     @DeleteMapping("/{userId}")

@@ -52,11 +52,11 @@
             <artifactId>spring-security-config</artifactId>
             <version>5.5.2</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.flywaydb.enterprise</groupId>-->
-<!--            <artifactId>flyway-core</artifactId>-->
-<!--            <version>7.14.1</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.flywaydb.enterprise</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>7.14.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -89,5 +89,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>

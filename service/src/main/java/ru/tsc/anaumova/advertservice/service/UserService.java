@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
+import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
 import ru.tsc.anaumova.advertservice.mapper.MapperDto;
 import ru.tsc.anaumova.advertservice.mapper.MapperJson;
 import ru.tsc.anaumova.advertservice.model.User;
@@ -40,7 +41,7 @@ public class UserService {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public Page<UserDto> findAll(Pageable pageable){
+    public Page<UserDto> findAll(Pageable pageable) {
         List<UserDto> users = userRepository.findAll(pageable)
                 .stream()
                 .map(userMapperDto::toDto)
@@ -57,7 +58,6 @@ public class UserService {
         ));
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void save(String jsonString) {
         final User user = userMapperJson.toEntity(jsonString);
         final String password = user.getPassword();
@@ -82,6 +82,24 @@ public class UserService {
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void delete(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public void updatePassword(
+            Long userId, String oldPassword, String newPassword
+    ) throws EntityNotFoundException, IncorrectPasswordException {
+        final User userFromDb = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        if (!checkOldPasswordEquals(userFromDb, oldPassword)) throw new IncorrectPasswordException();
+        final String newPasswordEncoded = bCryptPasswordEncoder.encode(newPassword);
+        userFromDb.setPassword(newPasswordEncoded);
+        userRepository.save(userFromDb);
+    }
+
+    private boolean checkOldPasswordEquals(User user, String oldPassword) {
+        final String currentPassword = user.getPassword();
+        final String currentPasswordEncoded = bCryptPasswordEncoder.encode(currentPassword);
+        final String oldPasswordEncoded = bCryptPasswordEncoder.encode(oldPassword);
+        return currentPasswordEncoded.equals(oldPasswordEncoded);
     }
 
 }
