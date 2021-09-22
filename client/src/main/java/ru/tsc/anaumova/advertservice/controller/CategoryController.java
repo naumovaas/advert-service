@@ -1,6 +1,7 @@
 package ru.tsc.anaumova.advertservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,7 @@ public class CategoryController {
 
     @DeleteMapping("/{categoryId}")
     @Operation(summary = "Удалить категорию")
+    @Parameter(name = "categoryId", description = "Ид удаляемой категории")
     public void deleteCategory(@PathVariable Long categoryId){
         categoryService.delete(categoryId);
     }

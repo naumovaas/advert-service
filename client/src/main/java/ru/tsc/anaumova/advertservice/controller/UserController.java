@@ -1,6 +1,7 @@
 package ru.tsc.anaumova.advertservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -37,12 +38,14 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @Operation(summary = "Просмотр профиля пользователя")
+    @Parameter(name = "userId", description = "Ид пользователя")
     public ResponseEntity<UserDto> showUserDetails(@PathVariable Long userId) throws EntityNotFoundException {
         return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/sales-history")
     @Operation(summary = "Просмотр истории объявлений пользователя")
+    @Parameter(name = "userId", description = "Ид пользователя")
     public ResponseEntity<Page<AdvertDto>> showUserSalesHistory(@PathVariable Integer userId, Pageable pageable) {
         return new ResponseEntity<>(advertService.findByUserId(userId, pageable), HttpStatus.OK);
     }
@@ -61,6 +64,9 @@ public class UserController {
 
     @PatchMapping
     @Operation(summary = "Изменить пароль пользователя")
+    @Parameter(name = "userId", description = "Ид пользователя")
+    @Parameter(name = "oldPassword", description = "Старый пароль")
+    @Parameter(name = "newPassword", description = "Новый пароль")
     public void updatePassword(
             @RequestParam Long userId,
             @RequestParam String oldPassword,
@@ -71,6 +77,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
+    @Parameter(name = "userId", description = "Ид удаляемого пользователя")
     public void deleteUser(@PathVariable Long userId){
         userService.delete(userId);
     }

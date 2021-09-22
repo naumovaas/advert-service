@@ -1,6 +1,7 @@
 package ru.tsc.anaumova.advertservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,18 +31,22 @@ public class MessageController {
 
     @PostMapping
     @Operation(summary = "Отправить сообщение")
+    @Parameter(name = "dialogId", description = "Ид диалога")
     public void addComment(@PathVariable String dialogId, @RequestBody MessageDto messageDto){
         messageService.save(messageDto);
     }
 
     @PutMapping
     @Operation(summary = "Редактировать сообщение")
+    @Parameter(name = "dialogId", description = "Ид диалога")
     public void updateComment(@PathVariable String dialogId, @RequestBody MessageDto messageDto) throws EntityNotFoundException {
         messageService.update(messageDto);
     }
 
     @DeleteMapping("/{messageId}")
     @Operation(summary = "Удалить сообщение")
+    @Parameter(name = "dialogId", description = "Ид диалога")
+    @Parameter(name = "messageId", description = "Ид удаляемого сообщения")
     public void deleteComment(@PathVariable String dialogId, @PathVariable Long messageId){
         messageService.delete(messageId);
     }

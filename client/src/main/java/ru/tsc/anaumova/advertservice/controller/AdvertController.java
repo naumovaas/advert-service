@@ -1,6 +1,7 @@
 package ru.tsc.anaumova.advertservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,8 @@ public class AdvertController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка объявлений")
+    @Parameter(name = "categoryId", description = "Ид категории")
+    @Parameter(name = "status", description = "Статус, по которому фильтруем", required = false)
     public ResponseEntity<Page<AdvertDto>> showAdverts(
             @PathVariable Integer categoryId,
             @RequestParam(name = "status", required = false) final String status,
@@ -34,6 +37,8 @@ public class AdvertController {
 
     @GetMapping("/{advertId}")
     @Operation(summary = "Просмотр объявления")
+    @Parameter(name = "categoryId", description = "Ид категории")
+    @Parameter(name = "advertId", description = "Ид объявления")
     public ResponseEntity<AdvertDto> showAdvertDetails(
             @PathVariable Integer categoryId, @PathVariable Long advertId
     ) throws EntityNotFoundException {
@@ -42,12 +47,14 @@ public class AdvertController {
 
     @PostMapping
     @Operation(summary = "Добавить объявление")
+    @Parameter(name = "categoryId", description = "Ид категории")
     public void addAdvert(@PathVariable Integer categoryId, @RequestBody AdvertDto advertDto) {
         advertService.save(advertDto);
     }
 
     @PutMapping
     @Operation(summary = "Редактировать объявление")
+    @Parameter(name = "categoryId", description = "Ид категории")
     public void updateAdvert(
             @PathVariable Integer categoryId, @RequestBody AdvertDto advertDto
     ) throws EntityNotFoundException {
@@ -56,12 +63,16 @@ public class AdvertController {
 
     @DeleteMapping("/{advertId}")
     @Operation(summary = "Удалить объявление")
+    @Parameter(name = "categoryId", description = "Ид категории")
+    @Parameter(name = "advertId", description = "Ид объявления")
     public void deleteAdvert(@PathVariable Integer categoryId, @PathVariable Long advertId) {
         advertService.delete(advertId);
     }
 
     @PatchMapping
     @Operation(summary = "Установить флаг приоритета для объявления")
+    @Parameter(name = "categoryId", description = "Ид категории")
+    @Parameter(name = "advertId", description = "Ид удаляемого объявления")
     public void updateAdvert(
             @PathVariable Integer categoryId, @RequestParam Long advertId
     ) throws EntityNotFoundException {
