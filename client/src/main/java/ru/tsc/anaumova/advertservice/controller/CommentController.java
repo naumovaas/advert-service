@@ -3,6 +3,7 @@ package ru.tsc.anaumova.advertservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.tsc.anaumova.advertservice.dto.CommentDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.service.CommentService;
 
@@ -19,23 +20,20 @@ public class CommentController {
 
     @PostMapping
     @Operation(summary = "Добавить комментарий")
-    public String addComment(@PathVariable String advertId, @RequestParam String commentDtoJson){
-        commentService.save(commentDtoJson);
-        return "redirect:/adverts/" + advertId + "/comments";
+    public void addComment(@PathVariable String advertId, @RequestBody CommentDto commentDto){
+        commentService.save(commentDto);
     }
 
     @PutMapping
     @Operation(summary = "Редактировать комментарий")
-    public String updateComment(@PathVariable String advertId, @RequestParam String commentDtoJson) throws EntityNotFoundException {
-        commentService.update(commentDtoJson);
-        return "redirect:/adverts/" + advertId + "/comments";
+    public void updateComment(@PathVariable String advertId, @RequestBody CommentDto commentDto) throws EntityNotFoundException {
+        commentService.update(commentDto);
     }
 
     @DeleteMapping("/{commentId}")
     @Operation(summary = "Удалить комментарий")
-    public String deleteComment(@PathVariable String advertId, @PathVariable Long commentId){
+    public void deleteComment(@PathVariable String advertId, @PathVariable Long commentId){
         commentService.delete(commentId);
-        return "redirect:/adverts/" + advertId + "/comments";
     }
 
 }

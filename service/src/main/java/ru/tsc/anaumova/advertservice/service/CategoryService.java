@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.CategoryDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.mapper.MapperDto;
-import ru.tsc.anaumova.advertservice.mapper.MapperJson;
 import ru.tsc.anaumova.advertservice.model.Category;
 import ru.tsc.anaumova.advertservice.repository.CategoryRepository;
 
@@ -20,13 +19,10 @@ public class CategoryService {
 
     private final MapperDto<Category, CategoryDto> categoryMapperDto;
 
-    private final MapperJson<CategoryDto> categoryDtoMapperJson;
-
     @Autowired
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryMapperDto = new MapperDto<>(CategoryDto.class, Category.class);
-        this.categoryDtoMapperJson = new MapperJson<>(CategoryDto.class);
     }
 
     public List<CategoryDto> findByParentCategoryId(Integer parentCategoryId) {
@@ -37,15 +33,13 @@ public class CategoryService {
     }
 
     @Secured("ROLE_ADMIN")
-    public void save(String jsonString) {
-        final CategoryDto categoryDto = categoryDtoMapperJson.toEntity(jsonString);
+    public void save(CategoryDto categoryDto) {
         final Category category = categoryMapperDto.toEntity(categoryDto);
         categoryRepository.save(category);
     }
 
     @Secured("ROLE_ADMIN")
-    public void update(String jsonString) throws EntityNotFoundException {
-        final CategoryDto categoryDto = categoryDtoMapperJson.toEntity(jsonString);
+    public void update(CategoryDto categoryDto) throws EntityNotFoundException {
         final Category category = categoryRepository
                 .findById(categoryDto.getCategoryId())
                 .orElseThrow(EntityNotFoundException::new);

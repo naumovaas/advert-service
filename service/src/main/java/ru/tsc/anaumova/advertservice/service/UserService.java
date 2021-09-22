@@ -11,7 +11,6 @@ import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
 import ru.tsc.anaumova.advertservice.mapper.MapperDto;
-import ru.tsc.anaumova.advertservice.mapper.MapperJson;
 import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.repository.UserRepository;
 
@@ -27,17 +26,11 @@ public class UserService {
 
     private final MapperDto<User, UserDto> userMapperDto;
 
-    private final MapperJson<UserDto> userDtoMapperJson;
-
-    private final MapperJson<User> userMapperJson;
-
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userMapperDto = new MapperDto<>(UserDto.class, User.class);
-        this.userDtoMapperJson = new MapperJson<>(UserDto.class);
-        this.userMapperJson = new MapperJson<>(User.class);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -50,16 +43,15 @@ public class UserService {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String findById(final long userId) throws EntityNotFoundException {
-        return userDtoMapperJson.toJson(userMapperDto.toDto(
+    public UserDto findById(final long userId) throws EntityNotFoundException {
+        return userMapperDto.toDto(
                 userRepository
                         .findById(userId)
                         .orElseThrow(EntityNotFoundException::new)
-        ));
+        );
     }
 
-    public void save(String jsonString) {
-        final User user = userMapperJson.toEntity(jsonString);
+    public void save(User user) {
         final String password = user.getPassword();
         final String passwordEncoded = bCryptPasswordEncoder.encode(password);
         user.setPassword(passwordEncoded);
@@ -67,8 +59,7 @@ public class UserService {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public void update(String jsonString) throws EntityNotFoundException {
-        final UserDto userDto = userDtoMapperJson.toEntity(jsonString);
+    public void update(UserDto userDto) throws EntityNotFoundException {
         final User userFromDb = userRepository
                 .findById(userDto.getUserId())
                 .orElseThrow(EntityNotFoundException::new);

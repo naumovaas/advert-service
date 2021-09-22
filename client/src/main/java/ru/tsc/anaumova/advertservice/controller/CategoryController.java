@@ -28,29 +28,25 @@ public class CategoryController {
             @RequestParam(name = "parentCategoryId", required = false) final Integer parentCategoryId
     ) {
         List<CategoryDto> categories = categoryService.findByParentCategoryId(parentCategoryId);
-        //if (categories.size() <= 0) return "redirect:/categories/" + parentCategoryId + "/adverts";
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @PostMapping
     @Operation(summary = "Добавить категорию")
-    public String addCategory(@RequestParam String categoryDtoJson){
-        categoryService.save(categoryDtoJson);
-        return "redirect:/categories";
+    public void addCategory(@RequestBody CategoryDto categoryDto){
+        categoryService.save(categoryDto);
     }
 
     @PutMapping
     @Operation(summary = "Редактировать категорию")
-    public String updateCategory(@RequestParam String categoryDtoJson) throws EntityNotFoundException {
-        categoryService.update(categoryDtoJson);
-        return "redirect:/categories";
+    public void updateCategory(@RequestBody CategoryDto categoryDto) throws EntityNotFoundException {
+        categoryService.update(categoryDto);
     }
 
     @DeleteMapping("/{categoryId}")
     @Operation(summary = "Удалить категорию")
-    public String deleteCategory(@PathVariable Long categoryId){
+    public void deleteCategory(@PathVariable Long categoryId){
         categoryService.delete(categoryId);
-        return "redirect:/categories";
     }
 
 }

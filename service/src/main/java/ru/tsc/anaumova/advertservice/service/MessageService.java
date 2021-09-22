@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.MessageDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.mapper.MapperDto;
-import ru.tsc.anaumova.advertservice.mapper.MapperJson;
 import ru.tsc.anaumova.advertservice.model.Message;
 import ru.tsc.anaumova.advertservice.repository.MessageRepository;
 
@@ -25,13 +24,10 @@ public class MessageService {
 
     private final MapperDto<Message, MessageDto> messageMapperDto;
 
-    private final MapperJson<MessageDto> messageDtoMapperJson;
-
     @Autowired
     public MessageService(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
         this.messageMapperDto = new MapperDto<>(MessageDto.class, Message.class);
-        this.messageDtoMapperJson = new MapperJson<>(MessageDto.class);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -44,16 +40,14 @@ public class MessageService {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public void save(String jsonString) {
-        final MessageDto messageDto = messageDtoMapperJson.toEntity(jsonString);
+    public void save(MessageDto messageDto) {
         final Message message = messageMapperDto.toEntity(messageDto);
         message.setDate(new Timestamp(new Date().getTime()));
         messageRepository.save(message);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public void update(String jsonString) throws EntityNotFoundException {
-        final MessageDto messageDto = messageDtoMapperJson.toEntity(jsonString);
+    public void update(MessageDto messageDto) throws EntityNotFoundException {
         final Message message = messageRepository
                 .findById(messageDto.getMessageId())
                 .orElseThrow(EntityNotFoundException::new);

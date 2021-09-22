@@ -34,7 +34,7 @@ public class AdvertController {
 
     @GetMapping("/{advertId}")
     @Operation(summary = "Просмотр объявления")
-    public ResponseEntity<String> showAdvertDetails(
+    public ResponseEntity<AdvertDto> showAdvertDetails(
             @PathVariable Integer categoryId, @PathVariable Long advertId
     ) throws EntityNotFoundException {
         return new ResponseEntity<>(advertService.findById(advertId), HttpStatus.OK);
@@ -42,34 +42,30 @@ public class AdvertController {
 
     @PostMapping
     @Operation(summary = "Добавить объявление")
-    public String addAdvert(@PathVariable Integer categoryId, @RequestParam String advertDtoJson) {
-        advertService.save(advertDtoJson);
-        return "redirect:/categories/" + categoryId + "/adverts";
+    public void addAdvert(@PathVariable Integer categoryId, @RequestBody AdvertDto advertDto) {
+        advertService.save(advertDto);
     }
 
     @PutMapping
     @Operation(summary = "Редактировать объявление")
-    public String updateAdvert(
-            @PathVariable Integer categoryId, @RequestParam String advertDtoJson
+    public void updateAdvert(
+            @PathVariable Integer categoryId, @RequestBody AdvertDto advertDto
     ) throws EntityNotFoundException {
-        advertService.update(advertDtoJson);
-        return "redirect:/categories/" + categoryId + "/adverts";
+        advertService.update(advertDto);
     }
 
     @DeleteMapping("/{advertId}")
     @Operation(summary = "Удалить объявление")
-    public String deleteAdvert(@PathVariable Integer categoryId, @PathVariable Long advertId) {
+    public void deleteAdvert(@PathVariable Integer categoryId, @PathVariable Long advertId) {
         advertService.delete(advertId);
-        return "redirect:/categories/" + categoryId + "/adverts";
     }
 
     @PatchMapping
     @Operation(summary = "Установить флаг приоритета для объявления")
-    public String updateAdvert(
+    public void updateAdvert(
             @PathVariable Integer categoryId, @RequestParam Long advertId
     ) throws EntityNotFoundException {
         advertService.setPriorityFlag(advertId);
-        return "redirect:/categories/" + categoryId + "/adverts" + advertId;
     }
 
 }

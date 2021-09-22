@@ -10,7 +10,6 @@ import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.enumerated.Status;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.mapper.MapperDto;
-import ru.tsc.anaumova.advertservice.mapper.MapperJson;
 import ru.tsc.anaumova.advertservice.model.Advert;
 import ru.tsc.anaumova.advertservice.repository.AdvertRepository;
 
@@ -26,13 +25,10 @@ public class AdvertService {
 
     private final MapperDto<Advert, AdvertDto> advertMapperDto;
 
-    private final MapperJson<AdvertDto> advertDtoMapperJson;
-
     @Autowired
     public AdvertService(AdvertRepository advertRepository) {
         this.advertRepository = advertRepository;
         this.advertMapperDto = new MapperDto<>(AdvertDto.class, Advert.class);
-        this.advertDtoMapperJson = new MapperJson<>(AdvertDto.class);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -54,17 +50,16 @@ public class AdvertService {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String findById(Long advertId) throws EntityNotFoundException {
-        return advertDtoMapperJson.toJson(advertMapperDto.toDto(
+    public AdvertDto findById(Long advertId) throws EntityNotFoundException {
+        return advertMapperDto.toDto(
                 advertRepository
                         .findById(advertId)
                         .orElseThrow(EntityNotFoundException::new)
-        ));
+        );
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public void save(String jsonString) {
-        final AdvertDto advertDto = advertDtoMapperJson.toEntity(jsonString);
+    public void save(AdvertDto advertDto) {
         final Advert advert = advertMapperDto.toEntity(advertDto);
         advert.setDate(new Timestamp(new Date().getTime()));
         advert.setPriorityFlag(false);
@@ -73,8 +68,7 @@ public class AdvertService {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public void update(String jsonString) throws EntityNotFoundException {
-        final AdvertDto advertDto = advertDtoMapperJson.toEntity(jsonString);
+    public void update(AdvertDto advertDto) throws EntityNotFoundException {
         final Advert advert = advertRepository.findById(advertDto.getAdvertId()).orElseThrow(EntityNotFoundException::new);
         advert.setCategoryId(advertDto.getCategoryId());
         advert.setPriorityFlag(advertDto.getPriorityFlag());

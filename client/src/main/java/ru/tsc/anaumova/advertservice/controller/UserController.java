@@ -11,6 +11,7 @@ import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
+import ru.tsc.anaumova.advertservice.model.User;
 import ru.tsc.anaumova.advertservice.service.AdvertService;
 import ru.tsc.anaumova.advertservice.service.UserService;
 
@@ -36,7 +37,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @Operation(summary = "Просмотр профиля пользователя")
-    public ResponseEntity<String> showUserDetails(@PathVariable Long userId) throws EntityNotFoundException {
+    public ResponseEntity<UserDto> showUserDetails(@PathVariable Long userId) throws EntityNotFoundException {
         return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
     }
 
@@ -48,34 +49,30 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Добавить пользователя")
-    public String addUser(@RequestParam String userJson){
-        userService.save(userJson);
-        return "redirect:/users/";
+    public void addUser(@RequestBody User user){
+        userService.save(user);
     }
 
     @PutMapping
     @Operation(summary = "Редактировать профиль пользователя")
-    public String updateUser(@RequestParam String userDtoJson) throws EntityNotFoundException {
-        userService.update(userDtoJson);
-        return "redirect:/users/";
+    public void updateUser(@RequestBody UserDto userDto) throws EntityNotFoundException {
+        userService.update(userDto);
     }
 
     @PatchMapping
     @Operation(summary = "Изменить пароль пользователя")
-    public String updatePassword(
+    public void updatePassword(
             @RequestParam Long userId,
             @RequestParam String oldPassword,
             @RequestParam String newPassword
     ) throws IncorrectPasswordException, EntityNotFoundException {
         userService.updatePassword(userId, oldPassword, newPassword);
-        return "redirect:/users//{userId}";
     }
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
-    public String deleteUser(@PathVariable Long userId){
+    public void deleteUser(@PathVariable Long userId){
         userService.delete(userId);
-        return "redirect:/users";
     }
 
 }
