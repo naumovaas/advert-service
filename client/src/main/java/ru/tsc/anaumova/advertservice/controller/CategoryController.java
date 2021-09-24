@@ -25,6 +25,7 @@ public class CategoryController {
 
     @GetMapping
     @Operation(summary = "Просмотр категорий")
+    @Parameter(name = "parentCategoryId", description = "Ид родительской категории", required = false)
     public ResponseEntity<List<CategoryDto>> showCategoryList(
             @RequestParam(name = "parentCategoryId", required = false) final Integer parentCategoryId
     ) {
