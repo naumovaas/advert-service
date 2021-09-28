@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
-import ru.tsc.anaumova.advertservice.comparator.AdvertPriorityComparator;
+import ru.tsc.anaumova.advertservice.comparator.AdvertPriorityFlagComparator;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.enumerated.Status;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -45,8 +45,8 @@ public class AdvertService {
     public Page<AdvertDto> findAllByFilter(Integer categoryId, String status, Pageable pageable) {
         List<AdvertDto> adverts = advertRepository.findByCategoryId(categoryId, pageable)
                 .stream()
-                .filter(a -> (status == null || status.isEmpty()) || a.getStatus().equals(status))
-                //.sorted(new AdvertPriorityComparator())
+                .filter(a -> (status == null || status.isEmpty()) || status.equals(a.getStatus()))
+                .sorted(new AdvertPriorityFlagComparator().reversed())
                 .map(advertMapperDto::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(adverts);

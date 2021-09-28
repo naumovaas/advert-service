@@ -1,10 +1,9 @@
-package mapper;
+package ru.tsc.anaumova.advertservice.mapper;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
-import ru.tsc.anaumova.advertservice.mapper.MapperDto;
 import ru.tsc.anaumova.advertservice.model.User;
 
 public class MapperDtoTest {
