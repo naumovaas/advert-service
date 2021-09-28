@@ -21,4 +21,10 @@ public class ExceptionAdvice {
         return new ResponseEntity<>("Incorrect old password entered...", HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler({IncorrectStatusException.class})
+    @ResponseBody
+    public ResponseEntity<String> handleIncorrectStatusException() {
+        return new ResponseEntity<>("Incorrect sort. Value not found...", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

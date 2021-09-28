@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
+import ru.tsc.anaumova.advertservice.exception.IncorrectStatusException;
 import ru.tsc.anaumova.advertservice.service.AdvertService;
 
 @RestController
@@ -57,14 +58,14 @@ public class AdvertController {
     @Parameter(name = "categoryId", description = "Ид категории")
     public void updateAdvert(
             @PathVariable Integer categoryId, @RequestBody AdvertDto advertDto
-    ) throws EntityNotFoundException {
+    ) throws EntityNotFoundException, IncorrectStatusException {
         advertService.update(advertDto);
     }
 
     @DeleteMapping("/{advertId}")
     @Operation(summary = "Удалить объявление")
     @Parameter(name = "categoryId", description = "Ид категории")
-    @Parameter(name = "advertId", description = "Ид объявления")
+    @Parameter(name = "advertId", description = "Ид удаляемого объявления")
     public void deleteAdvert(@PathVariable Integer categoryId, @PathVariable Long advertId) {
         advertService.delete(advertId);
     }
@@ -72,7 +73,7 @@ public class AdvertController {
     @PatchMapping
     @Operation(summary = "Установить флаг приоритета для объявления")
     @Parameter(name = "categoryId", description = "Ид категории")
-    @Parameter(name = "advertId", description = "Ид удаляемого объявления")
+    @Parameter(name = "advertId", description = "Ид объявления")
     public void updateAdvert(
             @PathVariable Integer categoryId, @RequestParam Long advertId
     ) throws EntityNotFoundException {

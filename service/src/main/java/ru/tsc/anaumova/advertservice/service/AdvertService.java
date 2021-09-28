@@ -6,9 +6,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import ru.tsc.anaumova.advertservice.comparator.AdvertPriorityComparator;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.enumerated.Status;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
+import ru.tsc.anaumova.advertservice.exception.IncorrectStatusException;
 import ru.tsc.anaumova.advertservice.mapper.MapperDto;
 import ru.tsc.anaumova.advertservice.model.Advert;
 import ru.tsc.anaumova.advertservice.repository.AdvertRepository;
@@ -44,6 +46,7 @@ public class AdvertService {
         List<AdvertDto> adverts = advertRepository.findByCategoryId(categoryId, pageable)
                 .stream()
                 .filter(a -> (status == null || status.isEmpty()) || a.getStatus().equals(status))
+                //.sorted(new AdvertPriorityComparator())
                 .map(advertMapperDto::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(adverts);
@@ -68,7 +71,8 @@ public class AdvertService {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public void update(AdvertDto advertDto) throws EntityNotFoundException {
+    public void update(AdvertDto advertDto) throws EntityNotFoundException, IncorrectStatusException {
+        checkUpdatedValues(advertDto);
         final Advert advert = advertRepository.findById(advertDto.getAdvertId()).orElseThrow(EntityNotFoundException::new);
         advert.setCategoryId(advertDto.getCategoryId());
         advert.setPriorityFlag(advertDto.getPriorityFlag());
@@ -87,6 +91,10 @@ public class AdvertService {
         final Advert advert = advertRepository.findById(advertId).orElseThrow(EntityNotFoundException::new);
         advert.setPriorityFlag(true);
         advertRepository.save(advert);
+    }
+
+    private void checkUpdatedValues(AdvertDto advertDto) throws IncorrectStatusException {
+        if (!Status.checkStatus(advertDto.getStatus())) throw new IncorrectStatusException();
     }
 
 }
