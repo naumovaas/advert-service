@@ -43,7 +43,7 @@ public class UserService {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public UserDto findById(final long userId) throws EntityNotFoundException {
+    public UserDto findById(final Long userId) throws EntityNotFoundException {
         return userMapperDto.toDto(
                 userRepository
                         .findById(userId)
