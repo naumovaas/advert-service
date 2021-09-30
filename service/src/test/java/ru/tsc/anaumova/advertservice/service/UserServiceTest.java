@@ -18,9 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
 
@@ -28,7 +29,7 @@ public class UserServiceTest {
 
     private UserService userService;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder= new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder bCryptPasswordEncoder= new BCryptPasswordEncoder();
 
     @Before
     public void init() {
@@ -36,6 +37,7 @@ public class UserServiceTest {
         UserRepository userRepository = mock(UserRepository.class);
         when(userRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(users));
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(users.get(0)));
+        when(userRepository.save(any())).thenReturn(users.get(0));
 
         userService = new UserService(userRepository, bCryptPasswordEncoder);
 
@@ -64,16 +66,21 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updatePassword() throws IncorrectPasswordException, EntityNotFoundException {
+    public void updatePasswordTest() throws IncorrectPasswordException, EntityNotFoundException {
         String newPassword = "1111";
-
         String oldPasswordRight = "12345";
-        String oldPasswordWrong = "12345678";
-
         userService.updatePassword(1L, oldPasswordRight, newPassword);
-        userService.updatePassword(1L, oldPasswordWrong, newPassword);
+    }
 
-        Assert.assertTrue(true);
+    @Test
+    public void updatePasswordExceptionTest() {
+        final String newPassword = "1111";
+        final String oldPasswordWrong = "555";
+        Assert.assertThrows(
+                IncorrectPasswordException.class,
+                () -> userService.updatePassword(1L, oldPasswordWrong, newPassword)
+        );
+
     }
 
 }
