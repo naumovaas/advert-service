@@ -77,7 +77,9 @@ public class UserService {
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void updatePassword(
-            Long userId, String oldPassword, String newPassword
+            Long userId,
+            String oldPassword,
+            String newPassword
     ) throws EntityNotFoundException, IncorrectPasswordException {
         final User userFromDb = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
         if (!checkOldPasswordEquals(userFromDb, oldPassword)) throw new IncorrectPasswordException();
@@ -88,9 +90,7 @@ public class UserService {
 
     private boolean checkOldPasswordEquals(User user, String oldPassword) {
         final String currentPassword = user.getPassword();
-        final String currentPasswordEncoded = bCryptPasswordEncoder.encode(currentPassword);
-        final String oldPasswordEncoded = bCryptPasswordEncoder.encode(oldPassword);
-        return currentPasswordEncoded.equals(oldPasswordEncoded);
+        return bCryptPasswordEncoder.matches(oldPassword, currentPassword);
     }
 
 }

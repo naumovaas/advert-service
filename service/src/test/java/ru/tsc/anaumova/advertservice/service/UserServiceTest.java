@@ -28,14 +28,14 @@ public class UserServiceTest {
 
     private UserService userService;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder= new BCryptPasswordEncoder();;
+    private BCryptPasswordEncoder bCryptPasswordEncoder= new BCryptPasswordEncoder();
 
     @Before
     public void init() {
         initTestData();
         UserRepository userRepository = mock(UserRepository.class);
         when(userRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(users));
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(new User()));
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(users.get(0)));
 
         userService = new UserService(userRepository, bCryptPasswordEncoder);
 
@@ -61,6 +61,19 @@ public class UserServiceTest {
     public void findByIdTest() throws EntityNotFoundException {
         UserDto resultUser = userService.findById(1L);
         Assert.assertNotNull(resultUser);
+    }
+
+    @Test
+    public void updatePassword() throws IncorrectPasswordException, EntityNotFoundException {
+        String newPassword = "1111";
+
+        String oldPasswordRight = "12345";
+        String oldPasswordWrong = "12345678";
+
+        userService.updatePassword(1L, oldPasswordRight, newPassword);
+        userService.updatePassword(1L, oldPasswordWrong, newPassword);
+
+        Assert.assertTrue(true);
     }
 
 }
