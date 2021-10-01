@@ -22,7 +22,7 @@ public class CommentController {
     @PostMapping
     @Operation(summary = "Добавить комментарий")
     @Parameter(name = "advertId", description = "Ид объявления")
-    public void addComment(@PathVariable String advertId, @RequestBody CommentDto commentDto){
+    public void addComment(@PathVariable String advertId, @RequestBody CommentDto commentDto) {
         commentService.save(commentDto);
     }
 
@@ -37,7 +37,7 @@ public class CommentController {
     @Operation(summary = "Удалить комментарий")
     @Parameter(name = "advertId", description = "Ид объявления")
     @Parameter(name = "commentId", description = "Ид удаляемого комментария")
-    public void deleteComment(@PathVariable String advertId, @PathVariable Long commentId){
+    public void deleteComment(@PathVariable String advertId, @PathVariable Long commentId) {
         commentService.delete(commentId);
     }
 

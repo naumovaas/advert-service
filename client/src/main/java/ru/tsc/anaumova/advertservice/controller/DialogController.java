@@ -23,7 +23,7 @@ public class DialogController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка диалогов")
-    public ResponseEntity<Page<DialogDto>> showDialogList(Pageable pageable){
+    public ResponseEntity<Page<DialogDto>> showDialogList(Pageable pageable) {
         return new ResponseEntity<>(dialogService.findAll(pageable), HttpStatus.OK);
     }
 

@@ -36,7 +36,7 @@ public class MessageService {
                 .stream()
                 .map(messageMapperDto::toDto)
                 .collect(Collectors.toList());
-                return new PageImpl<>(messages);
+        return new PageImpl<>(messages);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})

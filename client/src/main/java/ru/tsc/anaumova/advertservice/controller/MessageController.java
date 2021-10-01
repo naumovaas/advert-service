@@ -25,14 +25,14 @@ public class MessageController {
 
     @GetMapping
     @Operation(summary = "Просмотр сообщений")
-    public ResponseEntity<Page<MessageDto>> showMessages(@PathVariable Integer dialogId, Pageable pageable){
+    public ResponseEntity<Page<MessageDto>> showMessages(@PathVariable Integer dialogId, Pageable pageable) {
         return new ResponseEntity<>(messageService.findByDialogId(dialogId, pageable), HttpStatus.OK);
     }
 
     @PostMapping
     @Operation(summary = "Отправить сообщение")
     @Parameter(name = "dialogId", description = "Ид диалога")
-    public void addComment(@PathVariable String dialogId, @RequestBody MessageDto messageDto){
+    public void addComment(@PathVariable String dialogId, @RequestBody MessageDto messageDto) {
         messageService.save(messageDto);
     }
 
@@ -47,7 +47,7 @@ public class MessageController {
     @Operation(summary = "Удалить сообщение")
     @Parameter(name = "dialogId", description = "Ид диалога")
     @Parameter(name = "messageId", description = "Ид удаляемого сообщения")
-    public void deleteComment(@PathVariable String dialogId, @PathVariable Long messageId){
+    public void deleteComment(@PathVariable String dialogId, @PathVariable Long messageId) {
         messageService.delete(messageId);
     }
 

@@ -35,7 +35,7 @@ public class CategoryController {
 
     @PostMapping
     @Operation(summary = "Добавить категорию")
-    public void addCategory(@RequestBody CategoryDto categoryDto){
+    public void addCategory(@RequestBody CategoryDto categoryDto) {
         categoryService.save(categoryDto);
     }
 
@@ -48,7 +48,7 @@ public class CategoryController {
     @DeleteMapping("/{categoryId}")
     @Operation(summary = "Удалить категорию")
     @Parameter(name = "categoryId", description = "Ид удаляемой категории")
-    public void deleteCategory(@PathVariable Long categoryId){
+    public void deleteCategory(@PathVariable Long categoryId) {
         categoryService.delete(categoryId);
     }
 

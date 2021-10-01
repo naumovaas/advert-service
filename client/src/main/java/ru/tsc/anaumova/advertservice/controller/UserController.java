@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Просмотр списка пользователей")
-    public ResponseEntity<Page<UserDto>> showUsers(Pageable pageable){
+    public ResponseEntity<Page<UserDto>> showUsers(Pageable pageable) {
         return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
     }
 
@@ -52,7 +52,7 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Добавить пользователя")
-    public void addUser(@RequestBody User user){
+    public void addUser(@RequestBody User user) {
         userService.save(user);
     }
 
@@ -78,7 +78,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
     @Parameter(name = "userId", description = "Ид удаляемого пользователя")
-    public void deleteUser(@PathVariable Long userId){
+    public void deleteUser(@PathVariable Long userId) {
         userService.delete(userId);
     }
 
