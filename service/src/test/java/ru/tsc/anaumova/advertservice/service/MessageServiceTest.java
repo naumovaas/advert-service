@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import ru.tsc.anaumova.advertservice.dto.MessageDto;
 import ru.tsc.anaumova.advertservice.model.Message;
 import ru.tsc.anaumova.advertservice.repository.MessageRepository;
 
@@ -41,7 +40,7 @@ public class MessageServiceTest {
 
     @Test
     public void findByDialogIdTest() {
-        Page<MessageDto> resultFindByDialogId = messageService.findByDialogId(1, PageRequest.of(1, 2));
+        Page<Message> resultFindByDialogId = messageService.findByDialogId(1, PageRequest.of(1, 2));
         Assert.assertNotNull(resultFindByDialogId);
         Assert.assertNotNull(resultFindByDialogId.getContent());
         Assert.assertEquals(3, resultFindByDialogId.getContent().size());

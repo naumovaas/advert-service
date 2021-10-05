@@ -27,4 +27,10 @@ public class ExceptionAdvice {
         return new ResponseEntity<>("Incorrect sort. Value not found...", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler({ExistUsernameException.class})
+    @ResponseBody
+    public ResponseEntity<String> handleExistUsernameException() {
+        return new ResponseEntity<>("Username already exists...", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

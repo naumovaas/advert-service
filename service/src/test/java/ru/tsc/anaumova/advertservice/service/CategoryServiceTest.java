@@ -3,7 +3,6 @@ package ru.tsc.anaumova.advertservice.service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ru.tsc.anaumova.advertservice.dto.CategoryDto;
 import ru.tsc.anaumova.advertservice.model.Category;
 import ru.tsc.anaumova.advertservice.repository.CategoryRepository;
 
@@ -36,7 +35,7 @@ public class CategoryServiceTest {
 
     @Test
     public void findByParentCategoryIdTest() {
-        List<CategoryDto> resultCategoryList = categoryService.findByParentCategoryId(1);
+        List<Category> resultCategoryList = categoryService.findByParentCategoryId(1);
         Assert.assertNotNull(resultCategoryList);
         Assert.assertEquals(2, resultCategoryList.size());
         Assert.assertNotNull(resultCategoryList.get(0));

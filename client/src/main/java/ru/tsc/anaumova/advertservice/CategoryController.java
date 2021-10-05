@@ -1,4 +1,4 @@
-package ru.tsc.anaumova.advertservice.controller;
+package ru.tsc.anaumova.advertservice;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.CategoryDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
-import ru.tsc.anaumova.advertservice.service.CategoryService;
+import ru.tsc.anaumova.advertservice.facade.CategoryServiceFacade;
 
 import java.util.List;
 
@@ -16,40 +16,40 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final CategoryServiceFacade categoryServiceFacade;
 
     @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public CategoryController(CategoryServiceFacade categoryServiceFacade) {
+        this.categoryServiceFacade = categoryServiceFacade;
     }
 
     @GetMapping
     @Operation(summary = "Просмотр категорий")
     @Parameter(name = "parentCategoryId", description = "Ид родительской категории", required = false)
-    public ResponseEntity<List<CategoryDto>> showCategoryList(
+    public ResponseEntity<List<CategoryDto>> showList(
             @RequestParam(name = "parentCategoryId", required = false) final Integer parentCategoryId
     ) {
-        List<CategoryDto> categories = categoryService.findByParentCategoryId(parentCategoryId);
+        List<CategoryDto> categories = categoryServiceFacade.findByParentCategoryId(parentCategoryId);
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @PostMapping
     @Operation(summary = "Добавить категорию")
-    public void addCategory(@RequestBody CategoryDto categoryDto) {
-        categoryService.save(categoryDto);
+    public void add(@RequestBody CategoryDto categoryDto) {
+        categoryServiceFacade.save(categoryDto);
     }
 
     @PutMapping
     @Operation(summary = "Редактировать категорию")
-    public void updateCategory(@RequestBody CategoryDto categoryDto) throws EntityNotFoundException {
-        categoryService.update(categoryDto);
+    public void update(@RequestBody CategoryDto categoryDto) throws EntityNotFoundException {
+        categoryServiceFacade.update(categoryDto);
     }
 
     @DeleteMapping("/{categoryId}")
     @Operation(summary = "Удалить категорию")
     @Parameter(name = "categoryId", description = "Ид удаляемой категории")
-    public void deleteCategory(@PathVariable Long categoryId) {
-        categoryService.delete(categoryId);
+    public void delete(@PathVariable Long categoryId) {
+        categoryServiceFacade.delete(categoryId);
     }
 
 }

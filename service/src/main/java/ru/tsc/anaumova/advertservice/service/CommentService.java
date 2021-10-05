@@ -3,9 +3,7 @@ package ru.tsc.anaumova.advertservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
-import ru.tsc.anaumova.advertservice.dto.CommentDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
-import ru.tsc.anaumova.advertservice.mapper.MapperDto;
 import ru.tsc.anaumova.advertservice.model.Comment;
 import ru.tsc.anaumova.advertservice.repository.CommentRepository;
 
@@ -17,28 +15,24 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    private final MapperDto<Comment, CommentDto> commentMapperDto;
-
     @Autowired
     public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-        this.commentMapperDto = new MapperDto<>(CommentDto.class, Comment.class);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public void save(CommentDto commentDto) {
-        final Comment comment = commentMapperDto.toEntity(commentDto);
+    public void save(Comment comment) {
         comment.setDate(new Timestamp(new Date().getTime()));
         commentRepository.save(comment);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public void update(CommentDto commentDto) throws EntityNotFoundException {
-        final Comment comment = commentRepository
-                .findById(commentDto.getCommentId())
+    public void update(Comment comment) throws EntityNotFoundException {
+        final Comment commentFromDb = commentRepository
+                .findById(comment.getCommentId())
                 .orElseThrow(EntityNotFoundException::new);
-        comment.setText(commentDto.getText());
-        commentRepository.save(comment);
+        commentFromDb.setText(comment.getText());
+        commentRepository.save(commentFromDb);
     }
 
 

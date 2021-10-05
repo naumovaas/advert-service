@@ -1,4 +1,4 @@
-package ru.tsc.anaumova.advertservice.controller;
+package ru.tsc.anaumova.advertservice;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,23 +8,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.DialogDto;
-import ru.tsc.anaumova.advertservice.service.DialogService;
+import ru.tsc.anaumova.advertservice.facade.DialogServiceFacade;
 
 @RestController
 @RequestMapping("/dialogues")
 public class DialogController {
 
-    private final DialogService dialogService;
+    private final DialogServiceFacade dialogServiceFacade;
 
     @Autowired
-    public DialogController(DialogService dialogService) {
-        this.dialogService = dialogService;
+    public DialogController(DialogServiceFacade dialogServiceFacade) {
+        this.dialogServiceFacade = dialogServiceFacade;
     }
 
     @GetMapping
     @Operation(summary = "Просмотр списка диалогов")
-    public ResponseEntity<Page<DialogDto>> showDialogList(Pageable pageable) {
-        return new ResponseEntity<>(dialogService.findAll(pageable), HttpStatus.OK);
+    public ResponseEntity<Page<DialogDto>> showList(Pageable pageable) {
+        return new ResponseEntity<>(dialogServiceFacade.findAll(pageable), HttpStatus.OK);
     }
 
 }

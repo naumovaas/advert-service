@@ -3,11 +3,8 @@ package ru.tsc.anaumova.advertservice.service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.enumerated.Status;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.model.Advert;
@@ -53,41 +50,23 @@ public class AdvertServiceTest {
         adverts.add(testAdvert3);
     }
 
-    @Test
-    public void findByUserIdTest() {
-        Page<AdvertDto> resultFindByUserId = advertService.findByUserId(1, PageRequest.of(1, 2));
-        Assert.assertNotNull(resultFindByUserId);
-        Assert.assertNotNull(resultFindByUserId.getContent());
-        Assert.assertEquals(3, resultFindByUserId.getContent().size());
-    }
-
-    @Test
-    public void findAllByFilterTest() {
-        Page<AdvertDto> resultFindAllByFilter = advertService.findAllByFilter(1, "Открыто", PageRequest.of(1, 2));
-        Assert.assertNotNull(resultFindAllByFilter);
-        Assert.assertNotNull(resultFindAllByFilter.getContent());
-        Assert.assertEquals(1, resultFindAllByFilter.getContent().size());
-
-        Page<AdvertDto> nullResultFindAllByFilter = advertService.findAllByFilter(1, "Закрыто", PageRequest.of(1, 2));
-        Assert.assertNotNull(nullResultFindAllByFilter);
-        Assert.assertEquals(0, nullResultFindAllByFilter.getContent().size());
-    }
+//    @Test
+//    public void findAllByFilterTest() {
+//        Page<AdvertDto> resultFindAllByFilter = advertService.findAllByFilter(1, "Открыто", PageRequest.of(1, 2));
+//        Assert.assertNotNull(resultFindAllByFilter);
+//        Assert.assertNotNull(resultFindAllByFilter.getContent());
+//        Assert.assertEquals(1, resultFindAllByFilter.getContent().size());
+//
+//        Page<AdvertDto> nullResultFindAllByFilter = advertService.findAllByFilter(1, "Закрыто", PageRequest.of(1, 2));
+//        Assert.assertNotNull(nullResultFindAllByFilter);
+//        Assert.assertEquals(0, nullResultFindAllByFilter.getContent().size());
+//    }
 
     @Test
     public void findByIdTest() throws EntityNotFoundException {
-        AdvertDto resultAdvert = advertService.findById(1L);
+        Advert resultAdvert = advertService.findById(1L);
         Assert.assertNotNull(resultAdvert);
     }
-
-//    @Test
-//    public void saveTest() {
-//
-//    }
-//
-//    @Test
-//    public void setPriorityFlagTest() throws EntityNotFoundException {
-//
-//    }
 
     @Test
     public void checkStatusTest() {

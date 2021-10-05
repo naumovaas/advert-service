@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import ru.tsc.anaumova.advertservice.dto.DialogDto;
 import ru.tsc.anaumova.advertservice.model.Dialog;
 import ru.tsc.anaumova.advertservice.repository.DialogRepository;
 
@@ -41,7 +40,7 @@ public class DialogServiceTest {
 
     @Test
     public void findAllTest() {
-        Page<DialogDto> resultFindAll = dialogService.findAll(PageRequest.of(1, 2));
+        Page<Dialog> resultFindAll = dialogService.findAll(PageRequest.of(1, 2));
         Assert.assertNotNull(resultFindAll);
         Assert.assertNotNull(resultFindAll.getContent());
         Assert.assertEquals(3, resultFindAll.getContent().size());

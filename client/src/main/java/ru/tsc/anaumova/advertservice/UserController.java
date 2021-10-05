@@ -1,4 +1,4 @@
-package ru.tsc.anaumova.advertservice.controller;
+package ru.tsc.anaumova.advertservice;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,58 +8,48 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
-import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
+import ru.tsc.anaumova.advertservice.dto.UserRegistryDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
+import ru.tsc.anaumova.advertservice.exception.ExistUsernameException;
 import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
+import ru.tsc.anaumova.advertservice.facade.UserServiceFacade;
 import ru.tsc.anaumova.advertservice.model.User;
-import ru.tsc.anaumova.advertservice.service.AdvertService;
-import ru.tsc.anaumova.advertservice.service.UserService;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
-
-    private final AdvertService advertService;
+    private final UserServiceFacade userServiceFacade;
 
     @Autowired
-    public UserController(final UserService userService, final AdvertService advertService) {
-        this.userService = userService;
-        this.advertService = advertService;
+    public UserController(final UserServiceFacade userServiceFacade) {
+        this.userServiceFacade = userServiceFacade;
     }
 
     @GetMapping
     @Operation(summary = "Просмотр списка пользователей")
-    public ResponseEntity<Page<UserDto>> showUsers(Pageable pageable) {
-        return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
+    public ResponseEntity<Page<UserDto>> showList(Pageable pageable) {
+        return new ResponseEntity<>(userServiceFacade.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
     @Operation(summary = "Просмотр профиля пользователя")
     @Parameter(name = "userId", description = "Ид пользователя")
     public ResponseEntity<UserDto> showUserDetails(@PathVariable Long userId) throws EntityNotFoundException {
-        return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
-    }
-
-    @GetMapping("/{userId}/sales-history")
-    @Operation(summary = "Просмотр истории объявлений пользователя")
-    @Parameter(name = "userId", description = "Ид пользователя")
-    public ResponseEntity<Page<AdvertDto>> showUserSalesHistory(@PathVariable Integer userId, Pageable pageable) {
-        return new ResponseEntity<>(advertService.findByUserId(userId, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(userServiceFacade.findById(userId), HttpStatus.OK);
     }
 
     @PostMapping
     @Operation(summary = "Добавить пользователя")
-    public void addUser(@RequestBody User user) {
-        userService.save(user);
+    public void add(@RequestBody UserRegistryDto userRegistryDto) throws ExistUsernameException {
+        userServiceFacade.save(userRegistryDto);
     }
 
     @PutMapping
     @Operation(summary = "Редактировать профиль пользователя")
-    public void updateUser(@RequestBody UserDto userDto) throws EntityNotFoundException {
-        userService.update(userDto);
+    public void update(@RequestBody UserDto userDto) throws EntityNotFoundException, ExistUsernameException {
+        userServiceFacade.update(userDto);
     }
 
     @PatchMapping
@@ -72,14 +62,14 @@ public class UserController {
             @RequestParam String oldPassword,
             @RequestParam String newPassword
     ) throws IncorrectPasswordException, EntityNotFoundException {
-        userService.updatePassword(userId, oldPassword, newPassword);
+        userServiceFacade.updatePassword(userId, oldPassword, newPassword);
     }
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Удалить пользователя")
     @Parameter(name = "userId", description = "Ид удаляемого пользователя")
-    public void deleteUser(@PathVariable Long userId) {
-        userService.delete(userId);
+    public void delete(@PathVariable Long userId) {
+        userServiceFacade.delete(userId);
     }
 
 }

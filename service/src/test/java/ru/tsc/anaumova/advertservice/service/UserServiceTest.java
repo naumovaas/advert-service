@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
 import ru.tsc.anaumova.advertservice.model.User;
@@ -51,7 +50,7 @@ public class UserServiceTest {
 
     @Test
     public void findAllTest() {
-        Page<UserDto> resultFindAll = userService.findAll(PageRequest.of(1, 2));
+        Page<User> resultFindAll = userService.findAll(PageRequest.of(1, 2));
         Assert.assertNotNull(resultFindAll);
         Assert.assertNotNull(resultFindAll.getContent());
         Assert.assertEquals(2, resultFindAll.getContent().size());
@@ -59,7 +58,7 @@ public class UserServiceTest {
 
     @Test
     public void findByIdTest() throws EntityNotFoundException {
-        UserDto resultUser = userService.findById(1L);
+        User resultUser = userService.findById(1L);
         Assert.assertNotNull(resultUser);
     }
 
