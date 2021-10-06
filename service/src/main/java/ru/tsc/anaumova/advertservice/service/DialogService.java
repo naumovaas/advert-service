@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.model.Dialog;
 import ru.tsc.anaumova.advertservice.repository.DialogRepository;
@@ -22,7 +21,6 @@ public class DialogService {
         this.dialogRepository = dialogRepository;
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public Page<Dialog> findAll(Pageable pageable) {
         List<Dialog> dialogues = dialogRepository.findAll(pageable)
                 .stream()

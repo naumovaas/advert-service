@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -30,7 +29,6 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public Page<User> findAll(Pageable pageable) {
         List<User> users = userRepository.findAll(pageable)
                 .stream()
@@ -38,7 +36,6 @@ public class UserService {
         return new PageImpl<>(users, pageable, users.size());
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public User findById(final Long userId) throws EntityNotFoundException {
         return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
     }
@@ -53,7 +50,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void update(User user) throws EntityNotFoundException, ExistUsernameException {
         if (isUsernameExist(user.getUsername())) {
             throw new ExistUsernameException();
@@ -68,12 +64,10 @@ public class UserService {
         userRepository.save(userFromDb);
     }
 
-    @Secured({"ROLE_ADMIN"})
     public void delete(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void updatePassword(Long userId, String oldPassword, String newPassword)
             throws EntityNotFoundException, IncorrectPasswordException {
         final User userFromDb = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.model.Message;
@@ -25,7 +24,6 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public Page<Message> findByDialogId(Integer dialogId, Pageable pageable) {
         List<Message> messages = messageRepository.findByDialogId(dialogId, pageable)
                 .stream()
@@ -33,13 +31,11 @@ public class MessageService {
         return new PageImpl<>(messages, pageable, messages.size());
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void save(Message message) {
         message.setDate(new Timestamp(new Date().getTime()));
         messageRepository.save(message);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void update(Message message) throws EntityNotFoundException {
         final Message messageFromDb = messageRepository
                 .findById(message.getMessageId())
@@ -48,7 +44,6 @@ public class MessageService {
         messageRepository.save(messageFromDb);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void delete(Long messageId) {
         messageRepository.deleteById(messageId);
     }

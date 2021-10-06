@@ -1,7 +1,6 @@
 package ru.tsc.anaumova.advertservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.model.Comment;
@@ -20,13 +19,11 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void save(Comment comment) {
         comment.setDate(new Timestamp(new Date().getTime()));
         commentRepository.save(comment);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void update(Comment comment) throws EntityNotFoundException {
         final Comment commentFromDb = commentRepository
                 .findById(comment.getCommentId())
@@ -36,7 +33,6 @@ public class CommentService {
     }
 
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void delete(Long commentId) {
         commentRepository.deleteById(commentId);
     }

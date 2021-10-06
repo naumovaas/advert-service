@@ -1,4 +1,4 @@
-package ru.tsc.anaumova.advertservice;
+package ru.tsc.anaumova.advertservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

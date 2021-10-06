@@ -1,7 +1,9 @@
 package ru.tsc.anaumova.advertservice.exception;
 
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,7 +20,13 @@ public class ExceptionAdvice {
     @ExceptionHandler({IncorrectPasswordException.class})
     @ResponseBody
     public ResponseEntity<String> handleIncorrectPasswordException() {
-        return new ResponseEntity<>("Incorrect old password entered...", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Incorrect password entered...", HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    @ResponseBody
+    public ResponseEntity<String> handleAuthenticationException() {
+        return new ResponseEntity<>("Incorrect password or username entered...", HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({IncorrectStatusException.class})
@@ -31,6 +39,12 @@ public class ExceptionAdvice {
     @ResponseBody
     public ResponseEntity<String> handleExistUsernameException() {
         return new ResponseEntity<>("Username already exists...", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({JwtException.class})
+    @ResponseBody
+    public ResponseEntity<String> handleJwtException() {
+        return new ResponseEntity<>("JWT token expired or is invalid...", HttpStatus.FORBIDDEN);
     }
 
 }

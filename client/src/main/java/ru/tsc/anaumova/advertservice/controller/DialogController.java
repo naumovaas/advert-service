@@ -1,4 +1,4 @@
-package ru.tsc.anaumova.advertservice;
+package ru.tsc.anaumova.advertservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

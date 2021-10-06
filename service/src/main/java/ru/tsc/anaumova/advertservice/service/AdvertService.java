@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.comparator.AdvertPriorityFlagComparator;
 import ru.tsc.anaumova.advertservice.enumerated.Status;
@@ -39,12 +38,10 @@ public class AdvertService {
         return new PageImpl<>(adverts, pageable, adverts.size());
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public Advert findById(Long advertId) throws EntityNotFoundException {
         return advertRepository.findById(advertId).orElseThrow(EntityNotFoundException::new);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void save(Advert advert) {
         advert.setDate(new Timestamp(new Date().getTime()));
         advert.setPriorityFlag(false);
@@ -52,7 +49,6 @@ public class AdvertService {
         advertRepository.save(advert);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void update(Advert advert) throws EntityNotFoundException, IncorrectStatusException {
         validateStatus(advert);
         Advert advertFromDb = advertRepository.findById(advert.getAdvertId()).orElseThrow(EntityNotFoundException::new);
@@ -63,12 +59,10 @@ public class AdvertService {
         advertRepository.save(advertFromDb);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void delete(Long advertId) {
         advertRepository.deleteById(advertId);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void setPriorityFlag(Long advertId) throws EntityNotFoundException {
         final Advert advert = advertRepository.findById(advertId).orElseThrow(EntityNotFoundException::new);
         advert.setPriorityFlag(true);

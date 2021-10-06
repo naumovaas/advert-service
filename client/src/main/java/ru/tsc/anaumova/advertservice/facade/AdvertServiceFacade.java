@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -37,18 +36,15 @@ public class AdvertServiceFacade {
         return new PageImpl<>(adverts, pageable, adverts.size());
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public AdvertDto findById(Long advertId) throws EntityNotFoundException {
         return advertMapperDto.toDto(advertService.findById(advertId));
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void save(AdvertDto advertDto) {
         final Advert advert = advertMapperDto.toEntity(advertDto);
         advertService.save(advert);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void update(AdvertDto advertDto) throws EntityNotFoundException, IncorrectStatusException {
         final Advert advert = advertMapperDto.toEntity(advertDto);
         advertService.update(advert);
