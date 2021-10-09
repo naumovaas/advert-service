@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.tsc.anaumova.advertservice.exception.AccessDeniedException;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.exception.ExistUsernameException;
 import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
@@ -50,13 +52,19 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void update(User user) throws EntityNotFoundException, ExistUsernameException {
-        if (isUsernameExist(user.getUsername())) {
-            throw new ExistUsernameException();
+    public void update(User user, Long userId, UserDetails userDetails)
+            throws EntityNotFoundException, ExistUsernameException, AccessDeniedException {
+        final User userFromDb = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+
+        if (!userFromDb.getUsername().equals(userDetails.getUsername())) {
+            throw new AccessDeniedException();
         }
-        final User userFromDb = userRepository
-                .findById(user.getUserId())
-                .orElseThrow(EntityNotFoundException::new);
+
+        if (!userFromDb.getUsername().equals(user.getUsername())) {
+            if (isUsernameExist(user.getUsername())) {
+                throw new ExistUsernameException();
+            }
+        }
         userFromDb.setFirstName(user.getFirstName());
         userFromDb.setLastName(user.getLastName());
         userFromDb.setUsername(user.getUsername());

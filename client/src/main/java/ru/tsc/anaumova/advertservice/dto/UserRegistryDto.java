@@ -9,8 +9,6 @@ import lombok.Setter;
 @Schema(description = "Пользователь с полным списком полей")
 public class UserRegistryDto {
 
-    private Long userId;
-
     @Schema(description = "Уникальное имя пользователя")
     private String username;
 

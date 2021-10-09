@@ -47,4 +47,10 @@ public class ExceptionAdvice {
         return new ResponseEntity<>("JWT token expired or is invalid...", HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler({AccessDeniedException.class})
+    @ResponseBody
+    public ResponseEntity<String> handleAccessDeniedException() {
+        return new ResponseEntity<>("Access denied...", HttpStatus.FORBIDDEN);
+    }
+
 }

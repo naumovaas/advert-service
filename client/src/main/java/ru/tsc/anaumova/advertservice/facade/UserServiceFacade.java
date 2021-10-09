@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.dto.UserRegistryDto;
+import ru.tsc.anaumova.advertservice.exception.AccessDeniedException;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.exception.ExistUsernameException;
 import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
@@ -50,9 +53,9 @@ public class UserServiceFacade {
         userService.save(user);
     }
 
-    public void update(UserDto userDto) throws EntityNotFoundException, ExistUsernameException {
+    public void update(UserDto userDto, Long userId, UserDetails userDetails) throws EntityNotFoundException, ExistUsernameException, AccessDeniedException {
         final User user = userMapperDto.toEntity(userDto);
-        userService.update(user);
+        userService.update(user, userId, userDetails);
     }
 
     public void delete(Long userId) {

@@ -9,8 +9,6 @@ import lombok.Setter;
 @Schema(description = "Пользователь")
 public class UserDto {
 
-    private Long userId;
-
     @Schema(description = "имя пользователя")
     private String username;
 

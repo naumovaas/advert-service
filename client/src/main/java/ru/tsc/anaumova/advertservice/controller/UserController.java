@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 import ru.tsc.anaumova.advertservice.dto.UserDto;
 import ru.tsc.anaumova.advertservice.dto.UserRegistryDto;
+import ru.tsc.anaumova.advertservice.exception.AccessDeniedException;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.exception.ExistUsernameException;
 import ru.tsc.anaumova.advertservice.exception.IncorrectPasswordException;
@@ -48,8 +51,9 @@ public class UserController {
 
     @PutMapping
     @Operation(summary = "Редактировать профиль пользователя")
-    public void update(@RequestBody UserDto userDto) throws EntityNotFoundException, ExistUsernameException {
-        userServiceFacade.update(userDto);
+    public void update(@RequestBody UserDto userDto, @RequestParam Long userId, @AuthenticationPrincipal UserDetails userDetails)
+            throws EntityNotFoundException, ExistUsernameException, AccessDeniedException {
+        userServiceFacade.update(userDto, userId, userDetails);
     }
 
     @PatchMapping
