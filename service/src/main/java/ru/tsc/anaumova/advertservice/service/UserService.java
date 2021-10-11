@@ -76,9 +76,14 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public void updatePassword(Long userId, String oldPassword, String newPassword)
-            throws EntityNotFoundException, IncorrectPasswordException {
+    public void updatePassword(Long userId, String oldPassword, String newPassword, UserDetails userDetails)
+            throws EntityNotFoundException, IncorrectPasswordException, AccessDeniedException {
         final User userFromDb = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+
+        if (!userFromDb.getUsername().equals(userDetails.getUsername())) {
+            throw new AccessDeniedException();
+        }
+
         if (!checkOldPasswordEquals(userFromDb, oldPassword)) {
             throw new IncorrectPasswordException();
         }

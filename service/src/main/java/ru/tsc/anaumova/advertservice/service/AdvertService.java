@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.comparator.AdvertPriorityFlagComparator;
 import ru.tsc.anaumova.advertservice.enumerated.Status;
@@ -49,7 +50,7 @@ public class AdvertService {
         advertRepository.save(advert);
     }
 
-    public void update(Advert advert) throws EntityNotFoundException, IncorrectStatusException {
+    public void update(Advert advert, UserDetails userDetails) throws EntityNotFoundException, IncorrectStatusException {
         validateStatus(advert);
         Advert advertFromDb = advertRepository.findById(advert.getAdvertId()).orElseThrow(EntityNotFoundException::new);
         advertFromDb.setCategoryId(advert.getCategoryId());
@@ -59,7 +60,7 @@ public class AdvertService {
         advertRepository.save(advertFromDb);
     }
 
-    public void delete(Long advertId) {
+    public void delete(Long advertId, UserDetails userDetails) {
         advertRepository.deleteById(advertId);
     }
 

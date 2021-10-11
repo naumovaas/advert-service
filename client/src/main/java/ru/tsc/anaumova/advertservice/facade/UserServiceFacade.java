@@ -62,9 +62,9 @@ public class UserServiceFacade {
         userService.delete(userId);
     }
 
-    public void updatePassword(Long userId, String oldPassword, String newPassword)
-            throws EntityNotFoundException, IncorrectPasswordException {
-        userService.updatePassword(userId, oldPassword, newPassword);
+    public void updatePassword(Long userId, String oldPassword, String newPassword, UserDetails userDetails)
+            throws EntityNotFoundException, IncorrectPasswordException, AccessDeniedException {
+        userService.updatePassword(userId, oldPassword, newPassword, userDetails);
     }
 
 }

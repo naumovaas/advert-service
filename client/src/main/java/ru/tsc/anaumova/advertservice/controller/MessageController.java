@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.MessageDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -38,8 +40,8 @@ public class MessageController {
 
     @PutMapping
     @Operation(summary = "Редактировать сообщение")
-    public void update(@RequestBody MessageDto messageDto) throws EntityNotFoundException {
-        messageServiceFacade.update(messageDto);
+    public void update(@RequestBody MessageDto messageDto, @AuthenticationPrincipal UserDetails userDetails) throws EntityNotFoundException {
+        messageServiceFacade.update(messageDto, userDetails);
     }
 
     @DeleteMapping("/{messageId}")

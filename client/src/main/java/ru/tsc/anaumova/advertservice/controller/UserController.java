@@ -64,9 +64,10 @@ public class UserController {
     public void updatePassword(
             @RequestParam Long userId,
             @RequestParam String oldPassword,
-            @RequestParam String newPassword
-    ) throws IncorrectPasswordException, EntityNotFoundException {
-        userServiceFacade.updatePassword(userId, oldPassword, newPassword);
+            @RequestParam String newPassword,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) throws IncorrectPasswordException, EntityNotFoundException, AccessDeniedException {
+        userServiceFacade.updatePassword(userId, oldPassword, newPassword, userDetails);
     }
 
     @DeleteMapping("/{userId}")

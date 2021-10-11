@@ -3,6 +3,8 @@ package ru.tsc.anaumova.advertservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.CommentDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -29,8 +31,8 @@ public class CommentController {
     @PutMapping
     @Operation(summary = "Редактировать комментарий")
     @Parameter(name = "advertId", description = "Ид объявления")
-    public void update(@RequestBody CommentDto commentDto) throws EntityNotFoundException {
-        commentServiceFacade.update(commentDto);
+    public void update(@RequestBody CommentDto commentDto, @AuthenticationPrincipal UserDetails userDetails) throws EntityNotFoundException {
+        commentServiceFacade.update(commentDto, userDetails);
     }
 
     @DeleteMapping("/{commentId}")

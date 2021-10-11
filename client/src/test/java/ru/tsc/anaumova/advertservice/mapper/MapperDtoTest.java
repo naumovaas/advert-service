@@ -24,7 +24,6 @@ public class MapperDtoTest {
         user.setLastName("last");
 
         userDto = new UserDto();
-        userDto.setUserId(1L);
         userDto.setUsername("test");
         userDto.setRating(10);
         userDto.setFirstName("first");
@@ -36,7 +35,6 @@ public class MapperDtoTest {
     @Test
     public void toDtoTest() {
         UserDto userDto = userMapperDto.toDto(user);
-        Assert.assertEquals(user.getUserId(), userDto.getUserId());
         Assert.assertEquals(user.getUsername(), userDto.getUsername());
         Assert.assertEquals(user.getRating(), userDto.getRating());
         Assert.assertEquals(user.getFirstName(), userDto.getFirstName());
@@ -46,7 +44,6 @@ public class MapperDtoTest {
     @Test
     public void toEntityTest() {
         User user = userMapperDto.toEntity(userDto);
-        Assert.assertEquals(userDto.getUserId(), user.getUserId());
         Assert.assertEquals(userDto.getUsername(), user.getUsername());
         Assert.assertEquals(userDto.getRating(), user.getRating());
         Assert.assertEquals(userDto.getFirstName(), user.getFirstName());

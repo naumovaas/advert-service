@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -45,13 +46,13 @@ public class AdvertServiceFacade {
         advertService.save(advert);
     }
 
-    public void update(AdvertDto advertDto) throws EntityNotFoundException, IncorrectStatusException {
+    public void update(AdvertDto advertDto, UserDetails userDetails) throws EntityNotFoundException, IncorrectStatusException {
         final Advert advert = advertMapperDto.toEntity(advertDto);
-        advertService.update(advert);
+        advertService.update(advert, userDetails);
     }
 
-    public void delete(Long advertId) {
-        advertService.delete(advertId);
+    public void delete(Long advertId, UserDetails userDetails) {
+        advertService.delete(advertId, userDetails);
     }
 
     public void setPriorityFlag(Long advertId) throws EntityNotFoundException {

@@ -1,6 +1,7 @@
 package ru.tsc.anaumova.advertservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
 import ru.tsc.anaumova.advertservice.model.Comment;
@@ -24,7 +25,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public void update(Comment comment) throws EntityNotFoundException {
+    public void update(Comment comment, UserDetails userDetails) throws EntityNotFoundException {
         final Comment commentFromDb = commentRepository
                 .findById(comment.getCommentId())
                 .orElseThrow(EntityNotFoundException::new);

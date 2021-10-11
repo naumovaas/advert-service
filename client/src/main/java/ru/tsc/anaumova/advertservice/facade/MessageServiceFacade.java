@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.MessageDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -40,9 +41,9 @@ public class MessageServiceFacade {
         messageService.save(message);
     }
 
-    public void update(MessageDto messageDto) throws EntityNotFoundException {
+    public void update(MessageDto messageDto, UserDetails userDetails) throws EntityNotFoundException {
         final Message message = messageMapperDto.toEntity(messageDto);
-        messageService.save(message);
+        messageService.update(message, userDetails);
     }
 
     public void delete(Long messageId) {

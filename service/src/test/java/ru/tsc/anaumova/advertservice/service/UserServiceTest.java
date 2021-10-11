@@ -62,22 +62,22 @@ public class UserServiceTest {
         Assert.assertNotNull(resultUser);
     }
 
-    @Test
-    public void updatePasswordTest() throws IncorrectPasswordException, EntityNotFoundException {
-        String newPassword = "1111";
-        String oldPasswordRight = "12345";
-        userService.updatePassword(1L, oldPasswordRight, newPassword);
-    }
-
-    @Test
-    public void updatePasswordExceptionTest() {
-        final String newPassword = "1111";
-        final String oldPasswordWrong = "555";
-        Assert.assertThrows(
-                IncorrectPasswordException.class,
-                () -> userService.updatePassword(1L, oldPasswordWrong, newPassword)
-        );
-
-    }
+//    @Test
+//    public void updatePasswordTest() throws IncorrectPasswordException, EntityNotFoundException {
+//        String newPassword = "1111";
+//        String oldPasswordRight = "12345";
+//        userService.updatePassword(1L, oldPasswordRight, newPassword);
+//    }
+//
+//    @Test
+//    public void updatePasswordExceptionTest() {
+//        final String newPassword = "1111";
+//        final String oldPasswordWrong = "555";
+//        Assert.assertThrows(
+//                IncorrectPasswordException.class,
+//                () -> userService.updatePassword(1L, oldPasswordWrong, newPassword)
+//        );
+//
+//    }
 
 }

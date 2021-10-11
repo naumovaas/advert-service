@@ -1,6 +1,7 @@
 package ru.tsc.anaumova.advertservice.facade;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.tsc.anaumova.advertservice.dto.CommentDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -26,9 +27,9 @@ public class CommentServiceFacade {
         commentService.save(comment);
     }
 
-    public void update(CommentDto commentDto) throws EntityNotFoundException {
+    public void update(CommentDto commentDto, UserDetails userDetails) throws EntityNotFoundException {
         final Comment comment = commentMapperDto.toEntity(commentDto);
-        commentService.update(comment);
+        commentService.update(comment, userDetails);
     }
 
     public void delete(Long commentId) {

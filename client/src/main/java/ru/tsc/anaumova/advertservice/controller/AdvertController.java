@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.tsc.anaumova.advertservice.dto.AdvertDto;
 import ru.tsc.anaumova.advertservice.exception.EntityNotFoundException;
@@ -57,16 +59,16 @@ public class AdvertController {
     @PutMapping
     @Operation(summary = "Редактировать объявление")
     @Parameter(name = "categoryId", description = "Ид категории")
-    public void update(@RequestBody AdvertDto advertDto) throws EntityNotFoundException, IncorrectStatusException {
-        advertServiceFacade.update(advertDto);
+    public void update(@RequestBody AdvertDto advertDto, @AuthenticationPrincipal UserDetails userDetails) throws EntityNotFoundException, IncorrectStatusException {
+        advertServiceFacade.update(advertDto, userDetails);
     }
 
     @DeleteMapping("/{advertId}")
     @Operation(summary = "Удалить объявление")
     @Parameter(name = "categoryId", description = "Ид категории")
     @Parameter(name = "advertId", description = "Ид удаляемого объявления")
-    public void delete(@PathVariable Long advertId) {
-        advertServiceFacade.delete(advertId);
+    public void delete(@PathVariable Long advertId, @AuthenticationPrincipal UserDetails userDetails) {
+        advertServiceFacade.delete(advertId, userDetails);
     }
 
     @PatchMapping
